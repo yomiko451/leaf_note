@@ -1,6 +1,14 @@
 interface Note {
+    id: number,
     title: string,
-    time: number,
     content: string,
-    state: boolean
+    created_at: string,
+    updated_at: string,
+    tags: Array<string>,
+    stared: boolean,
+    path: string
+}
+
+export type {
+    Note
 }

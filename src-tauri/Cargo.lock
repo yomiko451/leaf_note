@@ -294,8 +294,10 @@ checksum = "7f2c685bad3eb3d45a01354cedb7d5faa66194d1d58ba6e267a8de788f79db38"
 dependencies = [
  "android-tzdata",
  "iana-time-zone",
+ "js-sys",
  "num-traits",
  "serde",
+ "wasm-bindgen",
  "windows-targets 0.48.5",
 ]
 
@@ -1400,6 +1402,7 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 name = "leaf_note"
 version = "0.0.0"
 dependencies = [
+ "chrono",
  "serde",
  "serde_json",
  "tauri",

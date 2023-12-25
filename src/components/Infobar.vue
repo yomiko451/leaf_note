@@ -1,11 +1,11 @@
 <template>
-    <div class="statusbar">
-        <p></p>
+    <div class="infobar">
+        <div></div>
     </div>
 </template>
 
 <style scoped>
-.statusbar {
+.infobar {
     background-color: aqua;
 }
 </style>
