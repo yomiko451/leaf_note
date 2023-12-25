@@ -6,6 +6,6 @@
 
 <style scoped>
 .infobar {
-    background-color: aqua;
+    background-color: rgb(40,44,52);
 }
 </style>

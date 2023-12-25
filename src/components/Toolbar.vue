@@ -15,7 +15,7 @@ const {addNote} = useNoteStore();
   
 <style scoped>
 .toolbar {
-    background-color: pink;
+    background-color: rgb(40,44,52);
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -24,14 +24,18 @@ const {addNote} = useNoteStore();
 .button {
     height: 4rem;
     width: 8rem;
-    background-color: rgb(103, 194, 58);
-    color: white;
+    box-sizing: border-box;
     font-size: 2rem;
-    line-height: 4rem;
+    line-height: 3.6rem;
     text-align: center;
     user-select: none;
+    transition: all 0.1s;
+}
+.button:hover {
+    border: 0.2rem solid rgb(180,180,180);
 }
 .button:active {
-    background-color: rgb(83, 164, 48);
+    background-color: rgb(180,180,180);
+    color: rgb(40,44,52);
 }
 </style>

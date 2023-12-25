@@ -28,6 +28,7 @@ import { RouterView } from 'vue-router';
   gap: 0.5rem;
   box-sizing: border-box;
   padding: 0.5rem;
+  background-color: rgb(33,37,43);
 }
 .infobar {
   grid-row: 1/2;

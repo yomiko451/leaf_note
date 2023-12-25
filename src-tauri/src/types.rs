@@ -22,7 +22,7 @@ impl Note {
             .unwrap()
             .as_micros();
         let time = Local::now()
-            .format("%Y-%m-%d %H:%M:%S")
+            .format("%Y-%m-%d")
             .to_string();
         Note {
             id,

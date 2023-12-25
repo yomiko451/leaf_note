@@ -24,21 +24,23 @@ const {notes} = useNoteStore();
 <style scoped>
 .notelist {
     min-height: 0;
-   
     display: grid;
     grid-template-rows: 6rem 3rem 1fr;
     gap: 0.5rem;
 }
 .notelist>input {
     padding: 0 0.5rem;
-    border: 0.2rem solid rgb(230,230,230);
-    outline: none
+    background-color: rgb(40,44,52);
+    outline: none;
+    transition: all 0.1s;
+    border: none;
+    box-sizing: border-box;
 }
 .notelist>input:focus {
-    border: 0.2rem solid rgb(179,225,157);
+    border: 0.2rem solid rgb(180,180,180);
 }
 .notelist>ol {
-    background-color: aquamarine;
+    background-color: rgb(40,44,52);
     padding: 2rem;
     overflow: scroll;
 }

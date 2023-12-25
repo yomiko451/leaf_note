@@ -20,7 +20,7 @@ const router = createRouter({
         },
         {
             path: '/',
-            redirect: '/todo'
+            redirect: '/content'
         }
     ]
 })
