@@ -1,14 +1,23 @@
 <template>
     <div class="content">
-        <input type="text" value="dddd">
+        <input type="text" :value="selectedNote?.title" placeholder="请输入标题">
         <div class="data">
-            <span>创建时间：2022-01-01</span>
-            <span>修改时间：2023-01-01</span>
-            <span>星</span>
+            <span>{{ selectedNote?.created_at }}</span>
+            <span>{{ selectedNote?.updated_at }}</span>
+            <span>{{ selectedNote?.stared }}</span>
         </div>
-        <textarea>dddd</textarea>
+        <textarea placeholder="请输入内容">{{ selectedNote?.content }}</textarea>
     </div>
 </template>
+
+<script lang="ts" setup>
+import { storeToRefs } from 'pinia';
+import { useNoteStore } from '../store/note';
+
+const noteStore = useNoteStore();
+const {selectedNote} = storeToRefs(noteStore);
+
+</script>
 
 <style scoped>
 .content {

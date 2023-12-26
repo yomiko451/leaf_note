@@ -24,12 +24,12 @@ const {addNote} = useNoteStore();
 .button {
     height: 4rem;
     width: 8rem;
-    box-sizing: border-box;
     font-size: 2rem;
-    line-height: 3.6rem;
+    line-height: 4rem;
     text-align: center;
     user-select: none;
     transition: all 0.1s;
+    cursor: pointer;
 }
 .button:hover {
     border: 0.2rem solid rgb(180,180,180);
