@@ -12,7 +12,6 @@ pub struct Note {
     pub updated_at: String,
     pub tags: Vec<String>,
     pub stared: bool,
-    pub path: PathBuf,
 }
 
 impl Note {
@@ -22,7 +21,7 @@ impl Note {
             .unwrap()
             .as_micros();
         let time = Local::now()
-            .format("%Y-%m-%d")
+            .format("%Y-%m-%d %H:%M:%S")
             .to_string();
         Note {
             id,
@@ -31,8 +30,7 @@ impl Note {
             created_at: time.clone(),
             updated_at: time,
             tags: vec![],
-            stared: false,
-            path: PathBuf::from(""),
+            stared: false
         }
 
     }

@@ -8,7 +8,7 @@
                 @click="toContent(note, index)"
                 :class="{clicked: noteStore.selectedNoteIndex === index}">
                 <h1>{{ note.title? note.title : '无标题' }}</h1>
-                <span>{{ note.created_at }} -- {{ note.updated_at }} -- 星</span>
+                <span>{{ note.created_at }} -- {{ note.updated_at }}</span>
                 <p>{{ note.content? note.content : '无内容' }}</p>
             </li>
         </ol>
@@ -66,7 +66,7 @@ function toContent(note: Note, index: number) {
     cursor: pointer;
     transition: all 0.1s;
     user-select: none;
-    padding: 0 1rem;
+    padding: 0.5rem 1rem;
     margin: 0.5rem 0;
 }
 .notelist>ol>li:hover {

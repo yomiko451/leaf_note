@@ -16,6 +16,12 @@ export const useNoteStore = defineStore('note', ()=>{
         notes.value.push(note)
     }
 
+    const saveNote = async () => {
+        if (selectedNoteIndex.value) {
+            await invoke('save_note', {note: notes.value[selectedNoteIndex.value]})
+        }
+    }
+
     const updateNote = (note: Note) => {
         if (typeof selectedNoteIndex.value === 'number') {
             notes.value[selectedNoteIndex.value] = note
@@ -31,6 +37,7 @@ export const useNoteStore = defineStore('note', ()=>{
         selectedNote,
         selectedNoteIndex,
         addNote,
+        saveNote,
         updateNote,
         deleteNote
     }

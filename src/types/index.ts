@@ -6,7 +6,6 @@ interface Note {
     updated_at: string,
     tags: Array<string>,
     stared: boolean,
-    path: string
 }
 
 export type {
