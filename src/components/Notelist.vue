@@ -56,7 +56,7 @@ function toContent(note: Note, index: number) {
 }
 .notelist>ol {
     background-color: rgb(40,44,52);
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     overflow: scroll;
 }
 .notelist>ol>li {

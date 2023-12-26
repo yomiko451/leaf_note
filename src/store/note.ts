@@ -11,6 +11,8 @@ export const useNoteStore = defineStore('note', ()=>{
 
     const addNote = async () => {
         const note: Note = await invoke('create_note')
+        selectedNoteIndex.value = notes.value.length - 1
+        selectedNote.value = note
         notes.value.push(note)
     }
 

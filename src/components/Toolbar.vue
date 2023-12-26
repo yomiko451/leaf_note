@@ -20,7 +20,6 @@ const {addNote} = useNoteStore();
     align-items: center;
     justify-content: space-evenly;
 }
-
 .button {
     height: 4rem;
     width: 8rem;
