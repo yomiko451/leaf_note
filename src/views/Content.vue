@@ -13,6 +13,7 @@
         <div class="taglist">
             <span v-for="tag,index in tagList" :key="index" @click="deleteTag(index)">#{{tag}}</span>
             <input class="tag" type="text" v-model="tag" @keyup.enter="addTag" placeholder="请输入标签">
+            <div @click="addTag">✚</div>
         </div>
     </div>
 </template>
@@ -173,7 +174,7 @@ async function saveSelectedNote() {
     color: rgb(224,108,117);
 }
 .content>.taglist>input {
-    line-height: 3rem;
+    height: 3rem;
     font-size: 1.5rem;
     min-width: 30%;
     flex: 1;
@@ -181,5 +182,17 @@ async function saveSelectedNote() {
     outline: none;
     background-color: rgb(40,44,52);
     padding: 0 0.5rem;
+}
+.content>.taglist>div {
+    line-height: 3rem;
+    font-size: 2rem;
+    color: rgb(152,195,121);
+    margin: 0 0.5rem;
+    transition: all 0.1s;
+    user-select: none;
+    cursor: pointer;
+}
+.content>.taglist>div:active {
+    transform: translateY(-0.5rem);
 }
 </style>

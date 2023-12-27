@@ -42,6 +42,7 @@ import { RouterView } from 'vue-router';
 .view {
   grid-row: 2/3;
   grid-column: 2/3;
+  min-height: 0;
 }
 .statusbar {
   grid-row: 3/4;

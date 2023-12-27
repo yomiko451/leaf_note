@@ -52,15 +52,13 @@ function newNote() {
     gap: 0.5rem;
 }
 .notelist>input {
+    line-height: 2rem;
+    font-size: 1.5rem;
     padding: 0 0.5rem;
     background-color: rgb(40,44,52);
     outline: none;
     transition: all 0.1s;
     border: none;
-    box-sizing: border-box;
-}
-.notelist>input:focus {
-    border: 0.2rem solid rgb(180,180,180);
 }
 .notelist>ol {
     background-color: rgb(40,44,52);
