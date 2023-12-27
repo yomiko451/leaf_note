@@ -3,6 +3,11 @@
         <Toolbar/>
         <input type="text" placeholder="请输入关键词">
         <ol>
+            <li class="add-note" @click="newNote">
+                <h1>添加新笔记</h1>
+                <span>这里会记录笔记的创建和修改时间</span>
+                <p>不要忘记手动保存笔记内容！</p>
+            </li>
             <li v-for="note, index in noteStore.notes" 
                 :key="note.id" 
                 @click="toContent(note, index)"
@@ -17,21 +22,24 @@
 
 <script lang="ts" setup>
 import Toolbar from './Toolbar.vue'
-import { Note } from '../types';
-import { useRouter } from 'vue-router';
-import { useNoteStore } from '../store/note';
+import { Note } from '../types'
+import { useRouter } from 'vue-router'
+import { useNoteStore } from '../store/note'
 
 
-const noteStore = useNoteStore();
-const router = useRouter();
+const noteStore = useNoteStore()
+const router = useRouter()
 function toContent(note: Note, index: number) {
     noteStore.$patch({
         selectedNote: note,
         selectedNoteIndex: index
     })
-    router.push('/content');
+    router.push('/content')
 }
-
+function newNote() {
+    noteStore.addNote()
+    router.push('/content')
+}
 
 
 </script>

@@ -1,16 +1,17 @@
 <template>
     <div class="toolbar">
-        <div class="button" @click="addNote">新键</div>
-        <div class="button">删除</div>
-        <div class="button">星标</div>
-        <div class="button">复制</div>
+        <div class="button" @click="router.push('/content')">笔记</div>
+        <div class="button" @click="router.push('/todo')">待办</div>
+        <div class="button" @click="router.push('/cover')">封面</div>
+        <div class="button">设置</div>
     </div>
 </template>
   
 <script lang="ts" setup>
-import { useNoteStore } from '../store/note';
+import { useRouter } from 'vue-router'
 
-const {addNote} = useNoteStore();
+const router = useRouter()
+
 </script>
   
 <style scoped>

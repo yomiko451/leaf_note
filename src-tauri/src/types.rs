@@ -1,4 +1,3 @@
-use std::path::PathBuf;
 use std::time::{SystemTime, UNIX_EPOCH};
 use chrono::Local;
 use serde::{Deserialize, Serialize};
@@ -27,8 +26,8 @@ impl Note {
             id,
             title: "".to_string(),
             content: "".to_string(),
-            created_at: time.clone(),
-            updated_at: time,
+            created_at: time,
+            updated_at: "暂无信息".to_string(),
             tags: vec![],
             stared: false
         }

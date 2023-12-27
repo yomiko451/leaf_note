@@ -23,6 +23,8 @@ import { storeToRefs } from 'pinia';
 import { useNoteStore } from '../store/note';
 import { Note } from '../types';
 import { invoke } from '@tauri-apps/api';
+import useDialog from '../hooks/useDialog'
+ 
 
 const title = ref<string>('')
 const content = ref<string>('')
@@ -33,6 +35,7 @@ const tagList = ref<Array<string>>([])
 const tag = ref<string>('')
 const noteStore = useNoteStore();
 const {selectedNote} = storeToRefs(noteStore);
+const {showWarningDialog} = useDialog()
 
 watch(selectedNote, ()=>{
     if (selectedNote.value) {
@@ -57,20 +60,24 @@ function deleteTag(index: number) {
 }
 async function saveSelectedNote() {
     if (selectedNote.value) {
-        time.value = await invoke('get_time');
-        const tempNote: Note = {
-            id: selectedNote.value.id,
-            title: title.value,
-            content: content.value,
-            stared: stared.value,
-            tags: tagList.value,
-            created_at: selectedNote.value.created_at,
-            updated_at: time.value,
+        if (title.value.trim() !== '' && content.value.trim() !== '') {
+            time.value = await invoke('get_time');
+            const tempNote: Note = {
+                id: selectedNote.value.id,
+                title: title.value,
+                content: content.value,
+                stared: stared.value,
+                tags: tagList.value,
+                created_at: selectedNote.value.created_at,
+                updated_at: time.value,
+            }
+            noteStore.updateNote(tempNote);
+            noteStore.saveNote()
+            saved.value = true
+        } else {
+            showWarningDialog('笔记标题与内容不能为空！')
         }
-        noteStore.updateNote(tempNote);
-        noteStore.saveNote()
-        saved.value = true
-    }
+    } 
 }
 </script>
 
@@ -88,6 +95,7 @@ async function saveSelectedNote() {
     font-size: 2rem;
     text-align: center;
     line-height: 6rem;
+    font-weight: bold;
     background-color: rgb(40,44,52);
 }
 .content>.data {
