@@ -53,8 +53,12 @@ watch([title, content, tagList, stared], ()=>{
     }
 },{deep: true})
 function addTag() {
-    tagList.value.push(tag.value);
-    tag.value = '';
+    if (tag.value.trim()) {
+        tagList.value.push(tag.value);
+        tag.value = '';
+    } else {
+        showWarningDialog('标签不能为空！')
+    }
 }
 function deleteTag(index: number) {
     tagList.value.splice(index, 1);
@@ -138,7 +142,7 @@ async function saveSelectedNote() {
     color: rgb(224,108,117);
 }
 .content>.data>.button>div:active {
-    transform: translateY(-0.5rem);
+    transform: scale(1.5);
 }
 .stared {
     color: gold
@@ -193,6 +197,6 @@ async function saveSelectedNote() {
     cursor: pointer;
 }
 .content>.taglist>div:active {
-    transform: translateY(-0.5rem);
+    transform: scale(1.5);
 }
 </style>

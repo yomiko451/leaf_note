@@ -3,7 +3,7 @@
         <Toolbar/>
         <input type="text" placeholder="请输入关键词">
         <ol>
-            <li class="add-note" @click="newNote">
+            <li class="add-note" @click="addNote">
                 <h1>添加新笔记</h1>
                 <span>这里会记录笔记的创建和修改时间</span>
                 <p>不要忘记手动保存笔记内容！</p>
@@ -36,7 +36,7 @@ function toContent(note: Note, index: number) {
     })
     router.push('/content')
 }
-function newNote() {
+function addNote() {
     noteStore.addNote()
     router.push('/content')
 }
@@ -52,7 +52,6 @@ function newNote() {
     gap: 0.5rem;
 }
 .notelist>input {
-    line-height: 2rem;
     font-size: 1.5rem;
     padding: 0 0.5rem;
     background-color: rgb(40,44,52);

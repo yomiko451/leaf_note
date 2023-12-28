@@ -6,6 +6,8 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             storage::create_note,
             storage::save_note,
+            storage::create_todo_list,
+            storage::create_todo,
             serve::get_time
         ])
         .run(tauri::generate_context!())
