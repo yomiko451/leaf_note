@@ -14,8 +14,13 @@ import Infobar from './components/Infobar.vue'
 import Notelist from './components/Notelist.vue'
 import Statusbar from './components/Statusbar.vue'
 import { RouterView } from 'vue-router';
+import { invoke } from '@tauri-apps/api';
 
+initialize();
 
+async function initialize() {
+  await invoke('initialize');
+}
 </script>
 
 <style scoped>

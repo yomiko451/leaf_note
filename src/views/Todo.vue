@@ -2,25 +2,25 @@
     <div class="todo">
         <h1>待办事项 10 已完成 5</h1>
         <div class="options">
-            <input v-model="title" type="text" placeholder="请输入事项组名称">
+            <input @keyup.enter="addNoteList" v-model="title" type="text" placeholder="请输入事项组名称">
             <div @click="addNoteList">添加</div>
         </div>
         <ol class="groups">
             <li v-for="todoList, index in todoListArr" :key="todoList.id">
                 <div class="title">
                     <p>{{ todoList.title }}</p>
-                    <p>7/10</p>
+                    <p>{{ todoList.content.filter(i => i.completed).length + ' / ' + todoList.content.length }}</p>
                     <div>删除</div>
                 </div>
                 <span>{{ todoList.created_at }}</span>
                 <div class="add">
-                    <input v-model="todo" type="text" placeholder="请输入待办事项">
+                    <input @keyup.enter="addTodo(index)" v-model="todo" type="text" placeholder="请输入待办事项">
                     <div @click="addTodo(index)">✚</div>
                 </div>
                 <ol class="items">
-                    <li v-for="item in todoList.content" :key="item.id">
-                        <p>{{ item.content }}</p>
-                        <div>✔</div>
+                    <li v-for="item, subindex in todoList.content" :key="item.id">
+                        <p :class="item.completed? 'completed' : ''">{{ item.content }}</p>
+                        <div @click="stateChange(item, index, subindex)" :class="item.completed? '' : 'completed'">✔</div>
                         <div>✖</div>
                     </li>
                 </ol>
@@ -33,6 +33,7 @@
 import useDialog from '../hooks/useDialog'
 import { storeToRefs } from 'pinia';
 import { useTodoStore } from '../store/todo';
+import { Todo } from '../types'
 import {ref} from 'vue'
 
 const todoStore = useTodoStore()
@@ -56,6 +57,11 @@ function addTodo(index: number) {
     } else {
         showWarningDialog('待办事项不能为空')
     }
+}
+
+function stateChange(item: Todo, index: number, subindex: number) {
+    item.completed =! item.completed
+    todoStore.updateTodo(item, index, subindex)
 }
 </script>
 
@@ -180,6 +186,7 @@ function addTodo(index: number) {
 .todo>.groups>li>.items>li>p {
     font-size: 1.5rem;
     text-indent: 3em;
+    transition: all 0.1s;
 }
 .todo>.groups>li>.items>li>div {
     font-size: 2rem;
@@ -194,14 +201,10 @@ function addTodo(index: number) {
 .todo>.groups>li>.items>li:hover>div {
     opacity: 1;
 }
-.todo>.groups>li>.items>li>:nth-child(2) {
-    color: rgb(152,195,121);
-}
 .todo>.groups>li>.items>li>:last-child {
     color: rgb(224,108,117);
 }
+.completed {
+    color: rgb(152,195,121);
+}
 </style>
-
-<script lang="ts" setup>
-
-</script>

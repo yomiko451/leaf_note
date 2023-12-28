@@ -145,7 +145,7 @@ async function saveSelectedNote() {
     transform: scale(1.5);
 }
 .stared {
-    color: gold
+    color: rgb(152,195,121);
 }
 .content>textarea {
     flex: 1;

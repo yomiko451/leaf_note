@@ -17,10 +17,14 @@ export const useTodoStore = defineStore('todo', ()=>{
         todoListArr.value[index].content.push(newTodo)
     }
 
+    const updateTodo = (item: Todo, index: number, subIndex: number)=>{
+        todoListArr.value[index].content[subIndex] = item
+    }
 
     return {
         todoListArr,
         addTodoList,
-        addTodo
+        addTodo,
+        updateTodo
     }
 })
