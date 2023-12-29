@@ -2,12 +2,22 @@ import {defineStore} from 'pinia'
 import {ref} from 'vue'
 import {Note} from '../types'
 import { invoke } from '@tauri-apps/api/tauri'
-
+import router from '../router'
 
 export const useNoteStore = defineStore('note', ()=>{
     const notes = ref<Array<Note>>([])
-    const selectedNote = ref<Note | null>(null)
-    const selectedNoteIndex = ref<number | null>(null)
+    const emptyNote: Note = {
+        id: -1,
+        title: '',
+        content: '',
+        created_at: '',
+        updated_at: '',
+        tags: [],
+        starred: false,
+        saved: false
+    }
+    const selectedNote = ref<Note>(emptyNote)
+    const selectedNoteIndex = ref<number>(-1)
 
     const addNote = async () => {
         const note: Note = await invoke('create_note')
@@ -17,19 +27,61 @@ export const useNoteStore = defineStore('note', ()=>{
     }
 
     const saveNote = async () => {
-        if (typeof selectedNoteIndex.value === 'number') {
-            await invoke('save_note', {note: notes.value[selectedNoteIndex.value]})
-        }
+        notes.value[selectedNoteIndex.value] = selectedNote.value
+        await invoke('save_note', {note: selectedNote.value})
     }
 
-    const updateNote = (note: Note) => {
-        if (typeof selectedNoteIndex.value === 'number') {
-            notes.value[selectedNoteIndex.value] = note
-        }
+    const updateSelectedNote = (note: Note, index: number) => {
+        const {id, title, content, created_at, updated_at, tags, starred, saved} = note
+        const newNote: Note = {id, title, content, created_at, updated_at, tags, starred, saved}
+        selectedNote.value = newNote
+        selectedNoteIndex.value = index
+    }
+
+    const updateNoteTime = (time: string) => {
+        selectedNote.value.updated_at = time
+    }
+
+    const changeNoteStarred = () => {
+        selectedNote.value.starred = !selectedNote.value.starred
+    }
+
+    const changeNoteToUnsaved = ()=>{
+        selectedNote.value.saved = false
+    }
+
+    const changeNoteToSaved = ()=>{
+        selectedNote.value.saved = true
+    }
+
+    const deleteLocalNote = async (item: Note, index: number) => {
+        await invoke('delete_note', {item})
+        deleteNote(index)
     }
 
     const deleteNote = (index: number) => {
         notes.value.splice(index, 1)
+        reset()
+    }
+
+    const addTag = (tag: string) => {
+        selectedNote.value.tags.push(tag)
+    }
+
+    const deleteTag = (index: number) => {
+        selectedNote.value.tags.splice(index, 1);
+    }
+
+    const reset = ()=>{
+        if (notes.value.length > 0) {
+            selectedNote.value = notes.value[0],
+            selectedNoteIndex.value = 0
+            router.push('/content')
+        } else {
+            selectedNote.value = emptyNote,
+            selectedNoteIndex.value = -1,
+            router.push('/empty')
+        }
     }
 
     return {
@@ -38,7 +90,15 @@ export const useNoteStore = defineStore('note', ()=>{
         selectedNoteIndex,
         addNote,
         saveNote,
-        updateNote,
-        deleteNote
+        updateNoteTime,
+        changeNoteStarred,
+        changeNoteToSaved,
+        changeNoteToUnsaved,
+        updateSelectedNote,
+        deleteNote,
+        deleteLocalNote,
+        addTag,
+        deleteTag,
+        reset
     }
 })

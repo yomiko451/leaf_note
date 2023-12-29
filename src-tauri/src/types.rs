@@ -21,7 +21,8 @@ pub struct Note {
     pub created_at: String,
     pub updated_at: String,
     pub tags: Vec<String>,
-    pub stared: bool,
+    pub starred: bool,
+    pub saved: bool
 }
 
 impl Note {
@@ -31,16 +32,17 @@ impl Note {
             title: "".to_string(),
             content: "".to_string(),
             created_at: Note::get_time(),
-            updated_at: "暂无信息".to_string(),
+            updated_at: "".to_string(),
             tags: vec![],
-            stared: false
+            starred: false,
+            saved: false
         }
     }
 }
 
 impl GetMetadata for Note {} 
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TodoList {
     pub id: u128,
     pub title: String,
@@ -51,7 +53,7 @@ pub struct TodoList {
 impl TodoList {
     pub fn new(title: String) -> TodoList {
         TodoList {
-            id: 0,
+            id: TodoList::get_id(),
             title: title,
             content: vec![],
             created_at: TodoList::get_time()
@@ -61,7 +63,7 @@ impl TodoList {
 
 impl GetMetadata for TodoList {}
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Todo {
     pub id: u128,
     pub content: String,
@@ -79,6 +81,21 @@ impl Todo {
 }
 
 impl GetMetadata for Todo {}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Config {
+    pub font_size: i32,
+    pub color: String
+}
+
+impl Config {
+    pub fn new() -> Config {
+        Config {
+            font_size: 16,
+            color: "#000000".to_string()
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {

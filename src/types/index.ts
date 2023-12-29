@@ -5,7 +5,8 @@ interface Note {
     created_at: string,
     updated_at: string,
     tags: Array<string>,
-    stared: boolean,
+    starred: boolean,
+    saved: boolean
 }
 
 interface TodoList {

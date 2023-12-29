@@ -1,6 +1,6 @@
 <template>
     <div class="todo">
-        <h1>待办事项 10 已完成 5</h1>
+        <h1>{{ CountSum }}</h1>
         <div class="options">
             <input @keyup.enter="addNoteList" v-model="title" type="text" placeholder="请输入事项组名称">
             <div @click="addNoteList">添加</div>
@@ -9,19 +9,19 @@
             <li v-for="todoList, index in todoListArr" :key="todoList.id">
                 <div class="title">
                     <p>{{ todoList.title }}</p>
-                    <p>{{ todoList.content.filter(i => i.completed).length + ' / ' + todoList.content.length }}</p>
-                    <div>删除</div>
+                    <p>{{ calculateCount(todoList.content) }}</p>
+                    <div @click="deleteTodoList(index, todoList.title)">删除</div>
                 </div>
                 <span>{{ todoList.created_at }}</span>
                 <div class="add">
-                    <input @keyup.enter="addTodo(index)" v-model="todo" type="text" placeholder="请输入待办事项">
-                    <div @click="addTodo(index)">✚</div>
+                    <input @keyup.enter="addTodo(index, $event)" type="text" placeholder="请输入待办事项">
+                    <div @click="addTodo(index, $event)">✚</div>
                 </div>
                 <ol class="items">
                     <li v-for="item, subindex in todoList.content" :key="item.id">
                         <p :class="item.completed? 'completed' : ''">{{ item.content }}</p>
                         <div @click="stateChange(item, index, subindex)" :class="item.completed? '' : 'completed'">✔</div>
-                        <div>✖</div>
+                        <div @click="todoStore.deleteTodo(index, subindex)">✖</div>
                     </li>
                 </ol>
             </li>
@@ -34,13 +34,24 @@ import useDialog from '../hooks/useDialog'
 import { storeToRefs } from 'pinia';
 import { useTodoStore } from '../store/todo';
 import { Todo } from '../types'
-import {ref} from 'vue'
+import {ref, computed} from 'vue'
 
 const todoStore = useTodoStore()
 const {todoListArr} = storeToRefs(todoStore)
-const {showWarningDialog} = useDialog()
+const {showWarningDialog, showAskDialog} = useDialog()
 const title = ref<string>('')
-const todo = ref<string>('')
+
+const CountSum = computed(()=>{
+    let sum = 0
+    let done = 0
+    for (let i = 0; i < todoListArr.value.length; i++) {
+        done += todoListArr.value[i].content.filter(j => j.completed).length
+    }
+    for (let i = 0; i < todoListArr.value.length; i++) {
+        sum += todoListArr.value[i].content.length
+    }
+    return `事项总计 ${sum} 已完成 ${done}`
+})
 
 function addNoteList() {
     if (title.value.trim()) {
@@ -50,10 +61,19 @@ function addNoteList() {
         showWarningDialog('事项组名称不能为空')
     }
 }
-function addTodo(index: number) {
-    if (todo.value.trim()) {
-        todoStore.addTodo(todo.value, index)
-        todo.value = ''
+
+async function deleteTodoList(index: number, title: string) {
+    const res = await showAskDialog(`确定删除 ${title} 事项组吗？`)
+    if (res) {
+        todoStore.deleteTodoList(index)
+    }
+}
+
+function addTodo(index: number, event: Event) {
+    let element = event.target as HTMLInputElement
+    if (element.value.trim()) {
+        todoStore.addTodo(element.value.trim(), index)
+        element.value = ''
     } else {
         showWarningDialog('待办事项不能为空')
     }
@@ -62,6 +82,10 @@ function addTodo(index: number) {
 function stateChange(item: Todo, index: number, subindex: number) {
     item.completed =! item.completed
     todoStore.updateTodo(item, index, subindex)
+}
+
+function calculateCount(content: Array<Todo>) {
+    return content.filter(i => i.completed).length + ' / ' + content.length 
 }
 </script>
 

@@ -1,4 +1,4 @@
-import {message} from '@tauri-apps/api/dialog'
+import {ask, message} from '@tauri-apps/api/dialog'
 
 export default function useDialog() {
   const showErrorDialog = (msg: string) => {
@@ -9,8 +9,13 @@ export default function useDialog() {
     console.log(msg)
   }
 
-  const showInfoDialog = (msg: string) => {
-    console.log(msg)
+  const showAskDialog = async (msg: string) => {
+    return await ask(msg, {
+        title: '提示',
+        type: 'info',
+        okLabel: '确定',
+        cancelLabel: '取消'
+    })
   }
 
   const showWarningDialog = async (msg: string) => {
@@ -25,6 +30,6 @@ export default function useDialog() {
     showErrorDialog,
     showSuccessDialog,
     showWarningDialog,
-    showInfoDialog
+    showAskDialog
   }
 }

@@ -15,11 +15,20 @@ import Notelist from './components/Notelist.vue'
 import Statusbar from './components/Statusbar.vue'
 import { RouterView } from 'vue-router';
 import { invoke } from '@tauri-apps/api';
+import {Note, TodoList} from './types'
+import { useNoteStore } from './store/note'
+import { useTodoStore } from './store/todo'
 
 initialize();
 
 async function initialize() {
   await invoke('initialize');
+  const notes: Array<Note> = await invoke('load_note');
+  const todoListArr: Array<TodoList> = await invoke('load_todo_list');
+  notes.reverse()
+  todoListArr.reverse()
+  useNoteStore().$patch({notes});
+  useTodoStore().$patch({todoListArr});
 }
 </script>
 

@@ -1,17 +1,17 @@
 <template>
     <div class="content">
-        <input type="text" v-model="title" placeholder="请输入标题">
+        <input type="text" v-model="selectedNote.title" placeholder="请输入标题">
         <div class="data">
-            <span :class="{saved}">最后保存于：{{ time }}</span>
+            <span :class="selectedNote.saved?'saved':'unsaved'">{{ saveInfo }}</span>
             <div class="button">
                 <div @click="saveSelectedNote">✔</div>
-                <div @click="stared = !stared" :class="{stared}">★</div>
-                <div>✖</div>
+                <div @click="noteStore.changeNoteStarred" :class="selectedNote.starred?'starred':''">★</div>
+                <div @click="deleteSelectedNote">✖</div>
             </div>
         </div>
-        <textarea placeholder="请输入内容" v-model="content"></textarea>
+        <textarea placeholder="请输入内容" v-model="selectedNote.content"></textarea>
         <div class="taglist">
-            <span v-for="tag,index in tagList" :key="index" @click="deleteTag(index)">#{{tag}}</span>
+            <span v-for="tag,index in selectedNote.tags" :key="index" @click="noteStore.deleteTag(index)">#{{tag}}</span>
             <input class="tag" type="text" v-model="tag" @keyup.enter="addTag" placeholder="请输入标签">
             <div @click="addTag">✚</div>
         </div>
@@ -19,70 +19,69 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed} from 'vue';
 import { storeToRefs } from 'pinia';
 import { useNoteStore } from '../store/note';
-import { Note } from '../types';
 import { invoke } from '@tauri-apps/api';
 import useDialog from '../hooks/useDialog'
- 
 
-const title = ref<string>('')
-const content = ref<string>('')
-const stared = ref<boolean>(false)
-const saved = ref<boolean>(false)
-const time = ref<string>('')
-const tagList = ref<Array<string>>([])
 const tag = ref<string>('')
 const noteStore = useNoteStore();
-const {selectedNote} = storeToRefs(noteStore);
-const {showWarningDialog} = useDialog()
+const {selectedNote, selectedNoteIndex} = storeToRefs(noteStore);
+const {showWarningDialog, showAskDialog} = useDialog()
 
-watch(selectedNote, ()=>{
-    if (selectedNote.value) {
-        title.value = selectedNote.value.title;
-        content.value = selectedNote.value.content;
-        stared.value = selectedNote.value.stared;
-        time.value = selectedNote.value.updated_at;
-        tagList.value = selectedNote.value.tags;
+const saveInfo = computed(()=>{
+    if (selectedNote.value.saved) {
+        return '最后保存于：' + selectedNote.value.updated_at
+    } else {
+        if (selectedNote.value.updated_at) {
+            return '笔记内容已修改，请及时保存！' 
+        } else {
+            return '新建笔记尚未保存，请及时保存！'
+        }
     }
 })
-watch([title, content, tagList, stared], ()=>{
-    if (saved.value === true) {
-        saved.value = false;
-    }
+
+watch([
+    ()=>selectedNote.value.title, 
+    ()=>selectedNote.value.content,
+    ()=>selectedNote.value.starred,
+    ()=>selectedNote.value.tags,
+], ()=>{
+    noteStore.changeNoteToUnsaved()
 },{deep: true})
+
 function addTag() {
     if (tag.value.trim()) {
-        tagList.value.push(tag.value);
+        noteStore.addTag(tag.value);
         tag.value = '';
     } else {
         showWarningDialog('标签不能为空！')
     }
 }
-function deleteTag(index: number) {
-    tagList.value.splice(index, 1);
-}
+
 async function saveSelectedNote() {
-    if (selectedNote.value) {
-        if (title.value.trim() !== '' && content.value.trim() !== '') {
-            time.value = await invoke('get_time');
-            const tempNote: Note = {
-                id: selectedNote.value.id,
-                title: title.value,
-                content: content.value,
-                stared: stared.value,
-                tags: tagList.value,
-                created_at: selectedNote.value.created_at,
-                updated_at: time.value,
+    if (selectedNote.value.title.trim() && selectedNote.value.content.trim()) {
+        const time: string = await invoke('get_time');
+        noteStore.updateNoteTime(time)
+        noteStore.changeNoteToSaved()
+        noteStore.saveNote()
+    } else {
+        showWarningDialog('笔记标题与内容不能为空！')
+    }
+}
+
+async function deleteSelectedNote() {
+        let res = await showAskDialog(`确定删除笔记 ${selectedNote.value.title} ？`)
+        if (res) {
+            res = await invoke('check_exist', {item: selectedNote.value})
+            if (res) {
+                noteStore.deleteLocalNote(selectedNote.value, selectedNoteIndex.value);
+            } else {
+                noteStore.deleteNote(selectedNoteIndex.value)
             }
-            noteStore.updateNote(tempNote);
-            noteStore.saveNote()
-            saved.value = true
-        } else {
-            showWarningDialog('笔记标题与内容不能为空！')
-        }
-    } 
+            noteStore.reset()
+        } 
 }
 </script>
 
@@ -118,6 +117,10 @@ async function saveSelectedNote() {
 .saved {
     color: rgb(152,195,121);
 }
+.unsaved {
+    color: rgb(224,108,117);
+}
+
 .content>.data>.button {
     height: 3rem;
     margin: 0 1rem;
@@ -144,7 +147,7 @@ async function saveSelectedNote() {
 .content>.data>.button>div:active {
     transform: scale(1.5);
 }
-.stared {
+.starred {
     color: rgb(152,195,121);
 }
 .content>textarea {
