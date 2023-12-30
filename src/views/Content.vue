@@ -74,7 +74,7 @@ async function saveSelectedNote() {
 async function deleteSelectedNote() {
         let res = await showAskDialog(`确定删除笔记 ${selectedNote.value.title} ？`)
         if (res) {
-            res = await invoke('check_exist', {item: selectedNote.value})
+            res = await invoke('check_note_exist', {item: selectedNote.value})
             if (res) {
                 noteStore.deleteLocalNote(selectedNote.value, selectedNoteIndex.value);
             } else {

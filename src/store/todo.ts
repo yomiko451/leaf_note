@@ -7,6 +7,10 @@ export const useTodoStore = defineStore('todo', ()=>{
     const todoListArr = ref<Array<TodoList>>([])
     
     
+    const updateTodoArr = (givenTodoArr: Array<TodoList>) =>{
+        todoListArr.value = givenTodoArr
+    }
+
     const addTodoList = async (title: string) => {
         const newTodoList: TodoList = await invoke('create_todo_list', {title})
         todoListArr.value.unshift(newTodoList)
@@ -40,6 +44,7 @@ export const useTodoStore = defineStore('todo', ()=>{
 
     return {
         todoListArr,
+        updateTodoArr,
         addTodoList,
         deleteTodoList,
         addTodo,

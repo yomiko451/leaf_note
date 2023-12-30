@@ -22,8 +22,16 @@ interface Todo {
     completed: boolean
 }
 
+interface Weather {
+    date: string,
+    direct: string,
+    temperature: string,
+    weather: string
+}
+
 export type {
     Note,
     TodoList,
-    Todo
+    Todo,
+    Weather
 }

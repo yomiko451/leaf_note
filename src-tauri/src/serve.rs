@@ -1,7 +1,7 @@
 use chrono::Local;
 use crate::types::{Note, TodoList, Todo};
 use crate::storage;
-use tauri::AppHandle;
+use tauri::{AppHandle, Manager};
 
 #[tauri::command]
 pub fn get_time() -> String {
@@ -24,4 +24,16 @@ pub fn create_todo_list(app_handle: AppHandle, title: String) -> TodoList {
 pub fn create_todo(content: String) -> Todo {
     Todo::new(content)
 }
+
+#[tauri::command]
+pub fn exit_app(app_handle: AppHandle) {
+    app_handle.exit(0);
+}
+
+#[tauri::command]
+pub async fn show_main_window(window: tauri::Window) {
+    let main_window = window.get_window("main").unwrap();
+    main_window.show().unwrap();
+}
+
 

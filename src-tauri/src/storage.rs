@@ -3,7 +3,7 @@ use std::fs;
 use crate::types::{Note, TodoList, Config};
 
 #[tauri::command]
-pub fn initialize(app_handle: AppHandle) {
+pub fn check_requirements(app_handle: AppHandle) {
     let path = app_handle
         .path_resolver()
         .app_local_data_dir()
@@ -46,6 +46,13 @@ pub fn load_todo_list(app_handle: AppHandle) -> Vec<TodoList> {
 }
 
 #[tauri::command]
+pub fn load_config(app_handle: AppHandle) -> Config {
+    let path = app_handle.path_resolver().app_local_data_dir().unwrap().join("config.json");
+    let file = fs::File::open(path).unwrap();
+    serde_json::from_reader(file).unwrap()
+} //TODO:需要考虑错误处理
+
+#[tauri::command]
 pub fn save_note(app_handle: AppHandle, note: Note) {
     let path = app_handle.path_resolver().app_local_data_dir().unwrap().join(format!("note/{}.json", note.id));
     let file = fs::File::create(path).unwrap();
@@ -72,7 +79,8 @@ pub fn delete_todo_list(app_handle: AppHandle, item: TodoList) {
 }
 
 #[tauri::command]
-pub fn check_exist(app_handle: AppHandle, item: Note) -> bool {
+pub fn check_note_exist(app_handle: AppHandle, item: Note) -> bool {
     let path = app_handle.path_resolver().app_local_data_dir().unwrap().join(format!("note/{}.json", item.id));
     fs::metadata(path).is_ok()
 }
+

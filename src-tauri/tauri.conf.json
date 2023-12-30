@@ -6,8 +6,8 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "leaf_note",
-    "version": "0.0.0"
+    "productName": "Leaf Note",
+    "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
@@ -47,7 +47,8 @@
         "title": "leaf_note",
         "width": 800,
         "height": 600,
-        "center": true
+        "center": true,
+        "visible": false
       }
     ]
   }

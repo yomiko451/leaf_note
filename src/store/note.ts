@@ -19,6 +19,10 @@ export const useNoteStore = defineStore('note', ()=>{
     const selectedNote = ref<Note>(emptyNote)
     const selectedNoteIndex = ref<number>(-1)
 
+    const updateNotes = (givenNotes: Array<Note>) => {
+        notes.value = givenNotes
+    }
+
     const addNote = async () => {
         const note: Note = await invoke('create_note')
         selectedNoteIndex.value = 0
@@ -80,7 +84,12 @@ export const useNoteStore = defineStore('note', ()=>{
         } else {
             selectedNote.value = emptyNote,
             selectedNoteIndex.value = -1,
-            router.push('/empty')
+            router.push({
+                path: '/empty',
+                query: {
+                    text: '单击左侧按钮添加新笔记'
+                }
+            })
         }
     }
 
@@ -88,6 +97,7 @@ export const useNoteStore = defineStore('note', ()=>{
         notes,
         selectedNote,
         selectedNoteIndex,
+        updateNotes,
         addNote,
         saveNote,
         updateNoteTime,

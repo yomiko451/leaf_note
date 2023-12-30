@@ -22,13 +22,14 @@ import { useTodoStore } from './store/todo'
 initialize();
 
 async function initialize() {
-  await invoke('initialize');
+  await invoke('check_requirements');
   const notes: Array<Note> = await invoke('load_note');
   const todoListArr: Array<TodoList> = await invoke('load_todo_list');
   notes.reverse()
   todoListArr.reverse()
-  useNoteStore().$patch({notes});
-  useTodoStore().$patch({todoListArr});
+  useNoteStore().updateNotes(notes);
+  useTodoStore().updateTodoArr(todoListArr);
+  await invoke('show_main_window');
 }
 </script>
 

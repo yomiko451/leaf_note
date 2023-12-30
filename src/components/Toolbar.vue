@@ -42,7 +42,12 @@ async function toCover() {
     selectedIndex.value = 2
 }
 
-defineExpose({selectedIndex})
+function resetIndex() {
+    selectedIndex.value = 0
+}
+
+const emit = defineEmits(['sendFunction'])
+emit('sendFunction', resetIndex)
 </script>
   
 <style scoped>

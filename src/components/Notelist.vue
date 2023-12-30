@@ -1,6 +1,6 @@
 <template>
     <div class="notelist">
-        <Toolbar ref="mark"/>
+        <Toolbar @sendFunction="getFunction"/>
         <input type="text" placeholder="请输入关键词">
         <ol>
             <li class="add-note" @click="addNote">
@@ -25,11 +25,15 @@ import Toolbar from './Toolbar.vue'
 import { Note } from '../types'
 import { useRouter } from 'vue-router'
 import { useNoteStore } from '../store/note'
-import {ref} from 'vue'
+import { ref } from 'vue'
 
 const noteStore = useNoteStore()
 const router = useRouter()
-const mark = ref()
+const resetIndex = ref<Function>(()=>{})
+
+function getFunction(func: Function) {
+    resetIndex.value = func
+}
 
 function toContent(note: Note, index: number) {
     noteStore.updateSelectedNote(note, index)
@@ -39,7 +43,7 @@ function toContent(note: Note, index: number) {
 function addNote() {
     noteStore.addNote()
     router.push('/content')
-    mark.value.selectedIndex = 0
+    resetIndex.value()
 }
 </script>
 
