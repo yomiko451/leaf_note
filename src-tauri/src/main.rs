@@ -1,5 +1,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-use leaf_note::{storage, serve, spider};
+use leaf_note::{storage, serve};
 use tauri::Manager;
 
 fn main() {

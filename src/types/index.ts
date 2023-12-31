@@ -32,6 +32,7 @@ interface Weather {
 interface Config {
     font_size: number,
     cover_filter: boolean,
+    city: string,
     weather: Weather
 }
 

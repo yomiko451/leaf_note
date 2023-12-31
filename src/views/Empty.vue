@@ -1,13 +1,11 @@
 <template>
     <div class="empty">
         <p>{{ text }}</p>
-        <button @click="invoke('spider_info')">exit</button>
     </div>
 </template>
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
-import { invoke } from '@tauri-apps/api';
 
 const router = useRoute()
 const text = router.query.text as string

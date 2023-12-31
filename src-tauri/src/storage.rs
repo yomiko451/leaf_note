@@ -1,4 +1,4 @@
-use tauri::AppHandle;
+use tauri::{AppHandle, window::Window};
 use std::fs;
 use chrono::Local;
 use crate::{types::{Note, TodoList, Config}, spider};
@@ -53,10 +53,9 @@ pub async fn load_config(app_handle: AppHandle) -> Config {
     let mut config: Config = serde_json::from_reader(&file).unwrap();
     let date = Local::now().format("%Y-%m-%d").to_string();
     if config.weather.date != date {
-        config.weather = spider::get_weather().await;
+        config.weather = spider::get_weather(config.city.clone()).await;
         config.weather.date = date;
         update_config(app_handle, config.clone());
-        println!("ddd")
     }
     config
 }

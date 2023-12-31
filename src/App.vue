@@ -30,7 +30,7 @@ async function initialize() {
   todoListArr.reverse()
   useNoteStore().updateNotes(notes);
   useTodoStore().updateTodoArr(todoListArr);
-  useConfigStore().loadConfig()
+  useConfigStore().loadConfig() //TODO:判断封面有没有，没有去空白页面
   await invoke('show_main_window');
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
     <div class="statusbar">
         <p>99/99</p>
-        <p>安庆</p>
+        <p>{{ config?.city }}</p>
         <p>{{ config?.weather.date }}</p>
         <p>{{ config?.weather.weather }}</p>
         <p>{{ config?.weather.temperature }}</p>

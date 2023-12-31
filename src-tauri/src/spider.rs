@@ -7,16 +7,15 @@ use crate::types::Weather;
 const WEATHER_RUL: &str = "http://apis.juhe.cn/simpleWeather/query";
 const KEY: &str = "c7345ec9a71317ff4560960f3718c2a0";
 
-pub async fn get_weather() -> Weather { 
+pub async fn get_weather(city: String) -> Weather { 
     let client = reqwest::Client::new();
-    match spider_weather(&client).await {
+    match spider_weather(&client, city).await {
         Ok(weather) => weather,
         Err(_) => Weather::new()
     }
 }
 
-async fn spider_weather(client: &Client) -> Result<Weather, Box<dyn Error>> {
-    let city = "安庆";
+async fn spider_weather(client: &Client, city: String) -> Result<Weather, Box<dyn Error>> {
     let url = format!("{}?key={}&city={}", WEATHER_RUL, KEY, city);
     let resp = client
         .get(url)

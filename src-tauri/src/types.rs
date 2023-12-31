@@ -86,6 +86,7 @@ impl GetMetadata for Todo {}
 pub struct Config {
     pub cover_filter: bool,
     pub font_size: usize,
+    pub city: String,
     pub weather: Weather
 }
 
@@ -94,6 +95,7 @@ impl Config {
         Config {
             font_size: 10,
             cover_filter: false,
+            city: "安庆".to_string(),
             weather: Weather::new()
         }
     }
