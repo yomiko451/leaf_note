@@ -7,17 +7,11 @@ use crate::types::Weather;
 const WEATHER_RUL: &str = "http://apis.juhe.cn/simpleWeather/query";
 const KEY: &str = "c7345ec9a71317ff4560960f3718c2a0";
 
-#[tauri::command]
-pub async fn get_weather() -> Weather { //TODO:运行时怎么处理？TAURI好像自带了TOKIO？
+pub async fn get_weather() -> Weather { 
     let client = reqwest::Client::new();
     match spider_weather(&client).await {
         Ok(weather) => weather,
-        Err(_) => Weather {
-            date: "暂无信息".to_string(),
-            direct: "暂无信息".to_string(),
-            temperature: "暂无信息".to_string(),
-            weather: "暂无信息".to_string(),
-        }
+        Err(_) => Weather::new()
     }
 }
 

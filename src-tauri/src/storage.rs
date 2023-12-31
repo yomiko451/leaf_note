@@ -1,6 +1,7 @@
 use tauri::AppHandle;
 use std::fs;
-use crate::types::{Note, TodoList, Config};
+use chrono::Local;
+use crate::{types::{Note, TodoList, Config}, spider};
 
 #[tauri::command]
 pub fn check_requirements(app_handle: AppHandle) {
@@ -46,11 +47,26 @@ pub fn load_todo_list(app_handle: AppHandle) -> Vec<TodoList> {
 }
 
 #[tauri::command]
-pub fn load_config(app_handle: AppHandle) -> Config {
+pub async fn load_config(app_handle: AppHandle) -> Config {
     let path = app_handle.path_resolver().app_local_data_dir().unwrap().join("config.json");
-    let file = fs::File::open(path).unwrap();
-    serde_json::from_reader(file).unwrap()
-} //TODO:需要考虑错误处理
+    let file = fs::File::open(&path).unwrap();
+    let mut config: Config = serde_json::from_reader(&file).unwrap();
+    let date = Local::now().format("%Y-%m-%d").to_string();
+    if config.weather.date != date {
+        config.weather = spider::get_weather().await;
+        config.weather.date = date;
+        update_config(app_handle, config.clone());
+        println!("ddd")
+    }
+    config
+}
+
+#[tauri::command]
+pub fn update_config(app_handle: AppHandle, config: Config) {
+    let path = app_handle.path_resolver().app_local_data_dir().unwrap().join("config.json");
+    let file = fs::File::create(path).unwrap();
+    serde_json::to_writer_pretty(file, &config).unwrap();
+}
 
 #[tauri::command]
 pub fn save_note(app_handle: AppHandle, note: Note) {

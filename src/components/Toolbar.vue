@@ -3,7 +3,7 @@
         <div :class="{selected: selectedIndex === 0}" @click="toContent">笔记</div>
         <div :class="{selected: selectedIndex === 1}" @click="toTodo">待办</div>
         <div :class="{selected: selectedIndex === 2}" @click="toCover">封面</div>
-        <div :class="{selected: selectedIndex === 3}">设置</div>
+        <div :class="{selected: selectedIndex === 3}" @click="toSetting">设置</div>
     </div>
 </template>
   
@@ -32,14 +32,19 @@ function toContent() {
     selectedIndex.value = 0
 }
 
-async function toTodo() {
+function toTodo() {
     router.push('/todo')
     selectedIndex.value = 1
 }
 
-async function toCover() {
+function toCover() {
     router.push('/cover')
     selectedIndex.value = 2
+}
+
+function toSetting() {
+    router.push('/setting')
+    selectedIndex.value = 3
 }
 
 function resetIndex() {

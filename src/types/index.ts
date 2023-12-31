@@ -29,9 +29,16 @@ interface Weather {
     weather: string
 }
 
+interface Config {
+    font_size: number,
+    cover_filter: boolean,
+    weather: Weather
+}
+
 export type {
     Note,
     TodoList,
     Todo,
-    Weather
+    Weather,
+    Config
 }

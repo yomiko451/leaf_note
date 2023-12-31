@@ -3,6 +3,7 @@ import Content from '../views/Content.vue'
 import Todo from '../views/Todo.vue'
 import Cover from '../views/Cover.vue'
 import Empty from '../views/Empty.vue'
+import Setting from '../views/Setting.vue'
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -22,6 +23,10 @@ const router = createRouter({
         {
             path: '/empty',
             component: Empty
+        },
+        {
+            path: '/setting',
+            component: Setting
         },
         {
             path: '/',

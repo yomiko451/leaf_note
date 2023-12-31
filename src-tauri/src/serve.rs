@@ -26,8 +26,8 @@ pub fn create_todo(content: String) -> Todo {
 }
 
 #[tauri::command]
-pub fn exit_app(app_handle: AppHandle) {
-    app_handle.exit(0);
+pub fn restart_app(app_handle: AppHandle) {
+    app_handle.restart(); //TODO: 重启
 }
 
 #[tauri::command]

@@ -12,14 +12,15 @@ fn main() {
             storage::save_todo_list,
             storage::delete_todo_list,
             storage::load_todo_list,
+            storage::load_config,
             storage::check_note_exist,
+            storage::update_config,
             serve::create_note,
             serve::create_todo_list,
             serve::create_todo,
             serve::get_time,
             serve::show_main_window,
-            serve::exit_app,
-            spider::get_weather,
+            serve::restart_app,
         ])
         .setup(|app| {
             let main_window = app.get_window("main").unwrap();

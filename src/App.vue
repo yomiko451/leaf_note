@@ -18,6 +18,7 @@ import { invoke } from '@tauri-apps/api';
 import {Note, TodoList} from './types'
 import { useNoteStore } from './store/note'
 import { useTodoStore } from './store/todo'
+import { useConfigStore } from './store/config';
 
 initialize();
 
@@ -29,6 +30,7 @@ async function initialize() {
   todoListArr.reverse()
   useNoteStore().updateNotes(notes);
   useTodoStore().updateTodoArr(todoListArr);
+  useConfigStore().loadConfig()
   await invoke('show_main_window');
 }
 </script>

@@ -1,6 +1,7 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 use chrono::Local;
 use serde::{Deserialize, Serialize};
+
 trait GetMetadata {
     fn get_time() -> String {
         Local::now().format("%Y-%m-%d %H:%M:%S").to_string()
@@ -81,22 +82,24 @@ impl Todo {
 
 impl GetMetadata for Todo {}
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Config {
-    pub font_size: i32,
-    pub color: String
+    pub cover_filter: bool,
+    pub font_size: usize,
+    pub weather: Weather
 }
 
 impl Config {
     pub fn new() -> Config {
         Config {
-            font_size: 16,
-            color: "#000000".to_string()
+            font_size: 10,
+            cover_filter: false,
+            weather: Weather::new()
         }
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Weather {
     pub date: String,
     pub direct: String,
@@ -105,12 +108,12 @@ pub struct Weather {
 }
 
 impl Weather {
-    pub fn new(date: String, direct: String, temperature: String, weather: String) -> Weather {
+    pub fn new() -> Weather {
         Weather {
-            date,
-            direct,
-            temperature,
-            weather,
+            date: "暂无信息".to_string(),
+            direct: "暂无信息".to_string(),
+            temperature: "暂无信息".to_string(),
+            weather: "暂无信息".to_string(),
         }
     }
 }

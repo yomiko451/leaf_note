@@ -1,6 +1,6 @@
 <template>
     <div class="infobar">
-        
+        <div></div>
     </div>
 </template>
 
@@ -17,8 +17,4 @@
     font-size: 2rem;
     font-weight: bold;
 }
-
-.infobar > div:nth-child(2) {
-}
-
 </style>
