@@ -1,11 +1,11 @@
 <template>
     <div class="setting">
-        <Subwindow v-if="true"/>
-        <div class="customize">
+        <Subwindow v-if="subwindowShow"/>
+        <div class="customize" @click="subwindowShow = true">
             <p>天气查询对应城市</p>
             <div>{{ config?.city }}</div>
         </div>
-        <div class="customize">
+        <div class="customize" @click="configStore.updateCoverFilter">
             <p>封面图片黑白滤镜</p>
             <div>{{ config?.cover_filter? '开启' : '关闭' }}</div>
         </div>
@@ -31,9 +31,17 @@
 import { useConfigStore } from '../store/config';
 import { storeToRefs } from 'pinia';
 import Subwindow from '../components/Subwindow.vue'
+import { ref, provide } from 'vue';
 
+
+const subwindowShow = ref(false);
 const configStore = useConfigStore();
 const {config} = storeToRefs(configStore);
+
+function subwindowClose() {
+    subwindowShow.value = false;
+}
+provide('SWC', subwindowClose)
 
 </script>
 

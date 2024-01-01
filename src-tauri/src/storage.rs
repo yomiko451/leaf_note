@@ -1,6 +1,7 @@
-use tauri::{AppHandle, window::Window};
-use std::fs;
+use tauri::AppHandle;
+use std::{fs, path::PathBuf};
 use chrono::Local;
+use rand::{self, Rng};
 use crate::{types::{Note, TodoList, Config}, spider};
 
 #[tauri::command]
@@ -49,15 +50,34 @@ pub fn load_todo_list(app_handle: AppHandle) -> Vec<TodoList> {
 #[tauri::command]
 pub async fn load_config(app_handle: AppHandle) -> Config {
     let path = app_handle.path_resolver().app_local_data_dir().unwrap().join("config.json");
+    let cover_path = app_handle.path_resolver().app_local_data_dir().unwrap().join("cover");
     let file = fs::File::open(&path).unwrap();
     let mut config: Config = serde_json::from_reader(&file).unwrap();
+    config.cover_url = get_cover(cover_path);
+    check_date(app_handle, config).await
+}
+
+async fn check_date(app_handle: AppHandle, mut config: Config) -> Config {
     let date = Local::now().format("%Y-%m-%d").to_string();
     if config.weather.date != date {
         config.weather = spider::get_weather(config.city.clone()).await;
-        config.weather.date = date;
         update_config(app_handle, config.clone());
     }
     config
+}
+
+fn get_cover(cover_path: PathBuf) -> PathBuf {
+    if let Ok(file) = fs::read_dir(cover_path) {
+        let files = file.map(|f|f.unwrap().path()).collect::<Vec<_>>();
+        if files.len() > 0 {
+            let index = rand::thread_rng().gen_range(0..(files.len() - 1));
+            files[index].clone()
+        } else {
+            PathBuf::new()
+        }
+    } else {
+        PathBuf::new()
+    }
 }
 
 #[tauri::command]
@@ -92,10 +112,3 @@ pub fn delete_todo_list(app_handle: AppHandle, item: TodoList) {
     let path = app_handle.path_resolver().app_local_data_dir().unwrap().join(format!("todo/{}.json", item.id));
     fs::remove_file(path).unwrap();
 }
-
-#[tauri::command]
-pub fn check_note_exist(app_handle: AppHandle, item: Note) -> bool {
-    let path = app_handle.path_resolver().app_local_data_dir().unwrap().join(format!("note/{}.json", item.id));
-    fs::metadata(path).is_ok()
-}
-

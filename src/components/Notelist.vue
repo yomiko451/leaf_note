@@ -3,7 +3,7 @@
         <Toolbar @sendFunction="getFunction"/>
         <input type="text" placeholder="请输入关键词">
         <ol>
-            <li class="add-note" @click="addNote">
+            <li @click="addNote">
                 <h1>添加新笔记</h1>
                 <span>这里会记录笔记的创建和修改时间</span>
                 <p>不要忘记手动保存笔记内容！</p>
@@ -84,6 +84,9 @@ function addNote() {
 .notelist>ol>li>h1 {
     font-size: 2rem;
     color: inherit;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
 }
 .notelist>ol>li>span {
     font-size: 1rem;
@@ -92,6 +95,9 @@ function addNote() {
 .notelist>ol>li>p {
     font-size: 1.5rem;
     color: inherit;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
 }
 .clicked {
     background-color: rgb(180,180,180);

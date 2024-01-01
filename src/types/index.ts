@@ -5,8 +5,7 @@ interface Note {
     created_at: string,
     updated_at: string,
     tags: Array<string>,
-    starred: boolean,
-    saved: boolean
+    starred: boolean
 }
 
 interface TodoList {
@@ -30,8 +29,9 @@ interface Weather {
 }
 
 interface Config {
-    font_size: number,
     cover_filter: boolean,
+    cover_url: string,
+    font_size: number,
     city: string,
     weather: Weather
 }

@@ -5,8 +5,12 @@ export default function useDialog() {
     console.log(msg)  //TODO:dialog
   }
 
-  const showSuccessDialog = (msg: string) => {
-    console.log(msg)
+  const showSuccessDialog = async (msg: string) => {
+    await message(msg, {
+      type: 'info',
+      title: '提醒！',
+      okLabel: '确定'
+  })
   }
 
   const showAskDialog = async (msg: string) => {

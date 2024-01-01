@@ -13,8 +13,7 @@ export const useNoteStore = defineStore('note', ()=>{
         created_at: '',
         updated_at: '',
         tags: [],
-        starred: false,
-        saved: false
+        starred: false
     }
     const selectedNote = ref<Note>(emptyNote)
     const selectedNoteIndex = ref<number>(-1)
@@ -31,39 +30,25 @@ export const useNoteStore = defineStore('note', ()=>{
     }
 
     const saveNote = async () => {
+        const time: string = await invoke('get_time');
+        selectedNote.value.updated_at = time
         notes.value[selectedNoteIndex.value] = selectedNote.value
         await invoke('save_note', {note: selectedNote.value})
     }
 
     const updateSelectedNote = (note: Note, index: number) => {
-        const {id, title, content, created_at, updated_at, tags, starred, saved} = note
-        const newNote: Note = {id, title, content, created_at, updated_at, tags, starred, saved}
+        const {id, title, content, created_at, updated_at, tags, starred} = note
+        const newNote: Note = {id, title, content, created_at, updated_at, tags, starred}
         selectedNote.value = newNote
         selectedNoteIndex.value = index
-    }
-
-    const updateNoteTime = (time: string) => {
-        selectedNote.value.updated_at = time
     }
 
     const changeNoteStarred = () => {
         selectedNote.value.starred = !selectedNote.value.starred
     }
 
-    const changeNoteToUnsaved = ()=>{
-        selectedNote.value.saved = false
-    }
-
-    const changeNoteToSaved = ()=>{
-        selectedNote.value.saved = true
-    }
-
-    const deleteLocalNote = async (item: Note, index: number) => {
+    const deleteNote = async (item: Note, index: number) => {
         await invoke('delete_note', {item})
-        deleteNote(index)
-    }
-
-    const deleteNote = (index: number) => {
         notes.value.splice(index, 1)
         reset()
     }
@@ -100,13 +85,9 @@ export const useNoteStore = defineStore('note', ()=>{
         updateNotes,
         addNote,
         saveNote,
-        updateNoteTime,
         changeNoteStarred,
-        changeNoteToSaved,
-        changeNoteToUnsaved,
         updateSelectedNote,
         deleteNote,
-        deleteLocalNote,
         addTag,
         deleteTag,
         reset

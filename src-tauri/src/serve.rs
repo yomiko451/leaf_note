@@ -9,8 +9,10 @@ pub fn get_time() -> String {
 }
 
 #[tauri::command]
-pub fn create_note() -> Note {
-    Note::new()
+pub fn create_note(app_handle: AppHandle) -> Note {
+    let note = Note::new();
+    storage::save_note(app_handle, note.clone());
+    note
 }
 
 #[tauri::command]
@@ -23,11 +25,6 @@ pub fn create_todo_list(app_handle: AppHandle, title: String) -> TodoList {
 #[tauri::command]
 pub fn create_todo(content: String) -> Todo {
     Todo::new(content)
-}
-
-#[tauri::command]
-pub fn restart_app(app_handle: AppHandle) {
-    app_handle.restart(); //TODO: 重启
 }
 
 #[tauri::command]

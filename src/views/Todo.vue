@@ -14,8 +14,8 @@
                 </div>
                 <span>{{ todoList.created_at }}</span>
                 <div class="add">
-                    <input @keyup.enter="addTodo(index, $event)" type="text" placeholder="请输入待办事项">
-                    <div @click="addTodo(index, $event)">✚</div>
+                    <input @keyup.enter="addTodoKeyboard(index, $event)" type="text" placeholder="请输入待办事项">
+                    <div @click="addTodoMouse(index, $event)">✚</div>
                 </div>
                 <ol class="items">
                     <li v-for="item, subindex in todoList.content" :key="item.id">
@@ -69,8 +69,18 @@ async function deleteTodoList(index: number, title: string) {
     }
 }
 
-function addTodo(index: number, event: Event) {
-    let element = event.target as HTMLInputElement
+function addTodoKeyboard(index: number, event: Event) {
+    const element = event.target as HTMLInputElement
+    addTodo(element, index)
+}
+
+function addTodoMouse(index: number, event: Event) {
+    const element = event.target as HTMLInputElement
+    const bro_element = element.previousElementSibling as HTMLInputElement
+    addTodo(bro_element, index)
+}
+
+function addTodo(element: HTMLInputElement, index: number) {
     if (element.value.trim()) {
         todoStore.addTodo(element.value.trim(), index)
         element.value = ''
@@ -154,6 +164,14 @@ function calculateCount(content: Array<Todo>) {
 .todo>.groups>li>.title {
     display: flex;
 }
+.todo>.groups>li>.title>:first-child {
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+.todo>.groups>li>.title>:nth-child(2) {
+    white-space: nowrap; 
+}
 .todo>.groups>li>.title>div {
     color: rgb(224,108,117);
     opacity: 0;
@@ -211,6 +229,9 @@ function calculateCount(content: Array<Todo>) {
     font-size: 1.5rem;
     text-indent: 3em;
     transition: all 0.1s;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
 }
 .todo>.groups>li>.items>li>div {
     font-size: 2rem;

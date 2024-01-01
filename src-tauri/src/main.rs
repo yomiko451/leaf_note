@@ -1,5 +1,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-use leaf_note::{storage, serve};
+use leaf_note::{storage, serve, spider};
 use tauri::Manager;
 
 fn main() {
@@ -13,14 +13,13 @@ fn main() {
             storage::delete_todo_list,
             storage::load_todo_list,
             storage::load_config,
-            storage::check_note_exist,
             storage::update_config,
             serve::create_note,
             serve::create_todo_list,
             serve::create_todo,
             serve::get_time,
             serve::show_main_window,
-            serve::restart_app,
+            spider::get_weather
         ])
         .setup(|app| {
             let main_window = app.get_window("main").unwrap();

@@ -11,24 +11,13 @@
 import { useRouter } from 'vue-router'
 import { useNoteStore } from '../store/note';
 import { ref } from 'vue'
-import { storeToRefs } from 'pinia';
 
 const selectedIndex = ref<number>(2)
 const router = useRouter()
 const noteStore = useNoteStore()
-const {notes} = storeToRefs(noteStore)
 
 function toContent() {
-    if (notes.value.length === 0) {
-        router.push({
-            path: '/empty',
-            query: {
-                text: '单击左侧按钮添加新笔记'
-            }
-        })
-    } else {
-        router.push('/content')
-    }
+    noteStore.reset()
     selectedIndex.value = 0
 }
 

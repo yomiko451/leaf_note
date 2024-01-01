@@ -1,4 +1,4 @@
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::{time::{SystemTime, UNIX_EPOCH}, path::PathBuf};
 use chrono::Local;
 use serde::{Deserialize, Serialize};
 
@@ -13,7 +13,7 @@ trait GetMetadata {
 }
 
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Note {
     pub id: u128,
     pub title: String,
@@ -21,8 +21,7 @@ pub struct Note {
     pub created_at: String,
     pub updated_at: String,
     pub tags: Vec<String>,
-    pub starred: bool,
-    pub saved: bool
+    pub starred: bool
 }
 
 impl Note {
@@ -32,10 +31,9 @@ impl Note {
             title: "".to_string(),
             content: "".to_string(),
             created_at: Note::get_time(),
-            updated_at: "".to_string(),
+            updated_at: "暂无信息".to_string(),
             tags: vec![],
-            starred: false,
-            saved: false
+            starred: false
         }
     }
 }
@@ -85,6 +83,7 @@ impl GetMetadata for Todo {}
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Config {
     pub cover_filter: bool,
+    pub cover_url: PathBuf,
     pub font_size: usize,
     pub city: String,
     pub weather: Weather
@@ -95,6 +94,7 @@ impl Config {
         Config {
             font_size: 10,
             cover_filter: false,
+            cover_url: PathBuf::new(),
             city: "安庆".to_string(),
             weather: Weather::new()
         }

@@ -2,12 +2,9 @@
     <div class="content">
         <input type="text" v-model="selectedNote.title" placeholder="请输入标题">
         <div class="data">
-            <span :class="selectedNote.saved?'saved':'unsaved'">{{ saveInfo }}</span>
-            <div class="button">
-                <div @click="saveSelectedNote">✔</div>
-                <div @click="noteStore.changeNoteStarred" :class="selectedNote.starred?'starred':''">★</div>
-                <div @click="deleteSelectedNote">✖</div>
-            </div>
+            <span class="saved">{{ saveInfo }}</span>
+            <div @click="noteStore.changeNoteStarred" :class="selectedNote.starred?'starred':''">星标</div>
+            <div @click="deleteSelectedNote">删除</div>
         </div>
         <textarea placeholder="请输入内容" v-model="selectedNote.content"></textarea>
         <div class="taglist">
@@ -22,7 +19,6 @@
 import { ref, watch, computed} from 'vue';
 import { storeToRefs } from 'pinia';
 import { useNoteStore } from '../store/note';
-import { invoke } from '@tauri-apps/api';
 import useDialog from '../hooks/useDialog'
 
 const tag = ref<string>('')
@@ -31,25 +27,30 @@ const {selectedNote, selectedNoteIndex} = storeToRefs(noteStore);
 const {showWarningDialog, showAskDialog} = useDialog()
 
 const saveInfo = computed(()=>{
-    if (selectedNote.value.saved) {
-        return '最后保存于：' + selectedNote.value.updated_at
-    } else {
-        if (selectedNote.value.updated_at) {
-            return '笔记内容已修改，请及时保存！' 
-        } else {
-            return '新建笔记尚未保存，请及时保存！'
-        }
-    }
+    return '最后保存于：' + selectedNote.value.updated_at
 })
 
 watch([
+    ()=>selectedNote.value.id,
     ()=>selectedNote.value.title, 
     ()=>selectedNote.value.content,
     ()=>selectedNote.value.starred,
     ()=>selectedNote.value.tags,
-], ()=>{
-    noteStore.changeNoteToUnsaved()
-},{deep: true})
+], (newValue, oldValue)=>{
+    if (newValue[0] === oldValue[0]) {
+        debounce(noteStore.saveNote)
+    }
+}, {deep: true})
+
+let timerId: number | null = null
+function debounce(func: Function) {
+    if (timerId) {
+        clearTimeout(timerId)
+    }
+    timerId = setTimeout(() => {
+        func()
+    }, 3000);
+}
 
 function addTag() {
     if (tag.value.trim()) {
@@ -60,26 +61,10 @@ function addTag() {
     }
 }
 
-async function saveSelectedNote() {
-    if (selectedNote.value.title.trim() && selectedNote.value.content.trim()) {
-        const time: string = await invoke('get_time');
-        noteStore.updateNoteTime(time)
-        noteStore.changeNoteToSaved()
-        noteStore.saveNote()
-    } else {
-        showWarningDialog('笔记标题与内容不能为空！')
-    }
-}
-
 async function deleteSelectedNote() {
         let res = await showAskDialog(`确定删除笔记 ${selectedNote.value.title} ？`)
         if (res) {
-            res = await invoke('check_note_exist', {item: selectedNote.value})
-            if (res) {
-                noteStore.deleteLocalNote(selectedNote.value, selectedNoteIndex.value);
-            } else {
-                noteStore.deleteNote(selectedNoteIndex.value)
-            }
+            noteStore.deleteNote(selectedNote.value, selectedNoteIndex.value);
             noteStore.reset()
         } 
 }
@@ -94,6 +79,7 @@ async function deleteSelectedNote() {
 }
 .content>input {
     height: 6rem;
+    padding: 0 1rem;
     border: none;
     outline: none;
     font-size: 2rem;
@@ -101,51 +87,42 @@ async function deleteSelectedNote() {
     line-height: 6rem;
     font-weight: bold;
     background-color: rgb(40,44,52);
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
 }
 .content>.data {
     margin: 0.5rem 0;
     height: 3rem;
     display: flex;
-    justify-content: space-between;
 }
 .content>.data>span {
     font-size: 1.5rem;
     line-height: 3rem;
-    margin: 0 1rem;
+    margin-left: 1rem;
     user-select: none;
+    flex: 1;
 }
 .saved {
     color: rgb(152,195,121);
 }
-.unsaved {
-    color: rgb(224,108,117);
-}
-
-.content>.data>.button {
+.content>.data>div {
     height: 3rem;
-    margin: 0 1rem;
-    display: flex;
-    align-items: center;
-}
-.content>.data>.button>div {
-    margin: 0 0.5rem;
-    width: 2rem;
-    height: 3rem;
-    font-size: 2rem;
+    width: 6rem;
+    font-size: 1.5rem;
     line-height: 3rem;
     text-align: center;
     user-select: none;
-    cursor: pointer;
     transition: all 0.1s;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    background-color: rgb(40,44,52);
 }
-.content>.data>.button>div:first-child {
-    color: rgb(152,195,121);
-}
-.content>.data>.button>div:last-child {
+.content>.data>div:last-child {
     color: rgb(224,108,117);
 }
-.content>.data>.button>div:active {
-    transform: scale(1.5);
+.content>.data>div:active {
+    background-color: rgba(180,180,180,0.25);
 }
 .starred {
     color: rgb(152,195,121);

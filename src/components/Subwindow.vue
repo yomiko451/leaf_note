@@ -3,25 +3,26 @@
         <p>请输入城市名称</p>
         <input type="text" v-model="text">
         <div>
-            <div @click="confirm">确定</div>
-            <div @click="cancel">取消</div>
+            <div @click="confirm(text)">确定</div>
+            <div @click="subwindowClose()">取消</div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-
+import { ref, inject } from 'vue';
+import { useConfigStore } from '../store/config';
+import useDialog from '../hooks/useDialog';
 
 const text = ref<string>('')
+const configStore = useConfigStore();
+const {showSuccessDialog} = useDialog();
+const subwindowClose = inject('SWC') as Function ;
 
-
-function confirm() {
-    
-}
-
-function cancel() {
-    
+async function confirm(text: string) {
+    configStore.updateWeather(text);
+    await showSuccessDialog('天气信息更新成功！')
+    subwindowClose()
 }
 </script>
 

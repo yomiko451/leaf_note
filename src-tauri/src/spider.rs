@@ -7,6 +7,7 @@ use crate::types::Weather;
 const WEATHER_RUL: &str = "http://apis.juhe.cn/simpleWeather/query";
 const KEY: &str = "c7345ec9a71317ff4560960f3718c2a0";
 
+#[tauri::command]
 pub async fn get_weather(city: String) -> Weather { 
     let client = reqwest::Client::new();
     match spider_weather(&client, city).await {
