@@ -11,7 +11,7 @@
 
 <style scoped>
 .infobar {
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
 }
 .infobar > div {
     font-size: 2rem;

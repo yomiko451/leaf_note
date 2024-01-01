@@ -21,7 +21,7 @@ const {config} = storeToRefs(configStore);
 
 <style scoped>
 .statusbar {
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
     display: flex;
     justify-content: space-between;
     align-items: center;

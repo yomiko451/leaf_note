@@ -38,6 +38,7 @@ function getFunction(func: Function) {
 function toContent(note: Note, index: number) {
     noteStore.updateSelectedNote(note, index)
     router.push('/content')
+    resetIndex.value()
 }
 
 function addNote() {
@@ -57,13 +58,13 @@ function addNote() {
 .notelist>input {
     font-size: 1.5rem;
     padding: 0 0.5rem;
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
     outline: none;
     transition: all 0.1s;
     border: none;
 }
 .notelist>ol {
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
     padding: 0.5rem 1rem;
     overflow: scroll;
 }
@@ -78,8 +79,7 @@ function addNote() {
     margin: 0.5rem 0;
 }
 .notelist>ol>li:hover {
-    background-color: rgb(180,180,180);
-    color: rgb(40,44,52);
+    background-color: var(--click-color);
 }
 .notelist>ol>li>h1 {
     font-size: 2rem;
@@ -100,8 +100,7 @@ function addNote() {
     text-overflow: ellipsis;
 }
 .clicked {
-    background-color: rgb(180,180,180);
-    color: rgb(40,44,52);
+    background-color: var(--click-color);
 }
 </style>
 

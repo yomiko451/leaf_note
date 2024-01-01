@@ -19,7 +19,7 @@
                 </div>
                 <ol class="items">
                     <li v-for="item, subindex in todoList.content" :key="item.id">
-                        <p :class="item.completed? 'completed' : ''">{{ item.content }}</p>
+                        <p :class="item.completed? 'completed' : ''">{{ (subindex + 1) + ' ' + item.content }}</p>
                         <div @click="stateChange(item, index, subindex)" :class="item.completed? '' : 'completed'">✔</div>
                         <div @click="todoStore.deleteTodo(index, subindex)">✖</div>
                     </li>
@@ -112,7 +112,7 @@ function calculateCount(content: Array<Todo>) {
     line-height: 6rem;
     font-size: 2rem;
     text-align: center;
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
     font-weight: normal;
     user-select: none;
 }
@@ -129,19 +129,19 @@ function calculateCount(content: Array<Todo>) {
     transition: all 0.1s;
     cursor: pointer;
     margin-left: 0.5rem;
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
 }
 .todo>.options>:last-child {
-    color: rgb(152,195,121);
+    color: var(--confirm-color);
 }
 .todo>.options>div:active,.todo>.groups>li>.title>div:active {
-    background-color: rgba(180,180,180,0.25);
+    background-color: var(--click-color);
 }
 .todo>.options>input {
     font-size: 1.5rem;
     flex: 1;
     padding: 0 0.5rem;
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
     outline: none;
     transition: all 0.1s;
     border: none;
@@ -151,15 +151,14 @@ function calculateCount(content: Array<Todo>) {
     flex-direction: column;
     align-items: center;
     overflow: scroll;
-    background-color: rgb(33,37,43);
+    background-color: var(--primiary-color);
     list-style: none;
-    box-sizing: border-box;
-    border: 0.5rem solid rgb(40,44,52);
 }
 .todo>.groups>li {
     padding: 0.5rem 1rem;
     margin: 1rem 0;
-    width: 80%;
+    width: 90%;
+    background-color: var(--click-color);
 }
 .todo>.groups>li>.title {
     display: flex;
@@ -173,7 +172,7 @@ function calculateCount(content: Array<Todo>) {
     white-space: nowrap; 
 }
 .todo>.groups>li>.title>div {
-    color: rgb(224,108,117);
+    color: var(--warning-color);
     opacity: 0;
 }
 .todo>.groups>li>.title:hover>div {
@@ -202,12 +201,12 @@ function calculateCount(content: Array<Todo>) {
     border: none;
     outline: none;
     padding: 0 0.5rem;
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
 }
 .todo>.groups>li>.add>div {
     cursor: pointer;
     transition: all 0.1s;
-    color: rgb(152,195,121);
+    color: var(--confirm-color);
 }
 .todo>.groups>li>.add>div:active {
     transform: scale(1.5);
@@ -247,9 +246,9 @@ function calculateCount(content: Array<Todo>) {
     opacity: 1;
 }
 .todo>.groups>li>.items>li>:last-child {
-    color: rgb(224,108,117);
+    color: var(--warning-color);
 }
 .completed {
-    color: rgb(152,195,121);
+    color: var(--confirm-color);
 }
 </style>

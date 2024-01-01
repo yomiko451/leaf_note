@@ -49,7 +49,7 @@ function debounce(func: Function) {
     }
     timerId = setTimeout(() => {
         func()
-    }, 3000);
+    }, 1500);
 }
 
 function addTag() {
@@ -86,7 +86,7 @@ async function deleteSelectedNote() {
     text-align: center;
     line-height: 6rem;
     font-weight: bold;
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
     white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis;
@@ -104,7 +104,7 @@ async function deleteSelectedNote() {
     flex: 1;
 }
 .saved {
-    color: rgb(152,195,121);
+    color: var(--confirm-color);
 }
 .content>.data>div {
     height: 3rem;
@@ -116,23 +116,23 @@ async function deleteSelectedNote() {
     transition: all 0.1s;
     cursor: pointer;
     margin-left: 0.5rem;
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
 }
 .content>.data>div:last-child {
-    color: rgb(224,108,117);
+    color: var(--warning-color);
 }
 .content>.data>div:active {
-    background-color: rgba(180,180,180,0.25);
+    background-color: var(--click-color);
 }
 .starred {
-    color: rgb(152,195,121);
+    color: var(--confirm-color);
 }
 .content>textarea {
     flex: 1;
     resize: none;
     outline: none;
     border: none;
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
     padding: 0.5rem 1rem;
     font-size: 2rem;
     text-align: justify;
@@ -143,19 +143,19 @@ async function deleteSelectedNote() {
     margin-top: 0.5rem;
     display: flex;
     align-items: center;
-    background-color: rgb(33,37,43);
+    background-color: var(--secondry-color);
     flex-wrap: wrap;
 }
 .content>.taglist>span {
     margin: 0 1rem;
     line-height: 3rem;
     font-size: 1.5rem;
-    color: rgb(152,195,121);
+    color: var(--confirm-color);
     user-select: none;
 }
 .content>.taglist>span:hover {
     cursor: pointer;
-    color: rgb(224,108,117);
+    color: var(--warning-color);
 }
 .content>.taglist>input {
     height: 3rem;
@@ -164,13 +164,13 @@ async function deleteSelectedNote() {
     flex: 1;
     border: none;
     outline: none;
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
     padding: 0 0.5rem;
 }
 .content>.taglist>div {
     line-height: 3rem;
     font-size: 2rem;
-    color: rgb(152,195,121);
+    color: var(--confirm-color);
     margin: 0 0.5rem;
     transition: all 0.1s;
     user-select: none;

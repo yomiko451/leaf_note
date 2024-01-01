@@ -16,13 +16,17 @@ import useDialog from '../hooks/useDialog';
 
 const text = ref<string>('')
 const configStore = useConfigStore();
-const {showSuccessDialog} = useDialog();
+const {showSuccessDialog, showWarningDialog} = useDialog();
 const subwindowClose = inject('SWC') as Function ;
 
 async function confirm(text: string) {
-    configStore.updateWeather(text);
-    await showSuccessDialog('天气信息更新成功！')
-    subwindowClose()
+    if (text) {
+        configStore.updateWeather(text);
+        await showSuccessDialog('天气信息更新成功！')
+        subwindowClose()
+    } else {
+        await showWarningDialog('城市名称不能为空！')
+    }
 }
 </script>
 
@@ -39,7 +43,7 @@ async function confirm(text: string) {
     align-items: center;
     justify-content: space-between;
     position: fixed;
-    background-color: rgb(33,37,43);
+    background-color: var(--secondry-color);
 }
 .subwindow>p {
     font-size: 2rem;
@@ -50,7 +54,7 @@ async function confirm(text: string) {
     text-align: center;
     border: none;
     outline: none;
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
 }
 .subwindow>div {
     width: 20rem;
@@ -62,16 +66,16 @@ async function confirm(text: string) {
     text-align: center;
     cursor: pointer;
     line-height: 4rem;
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
     transition: all 0.1s;
 }
 .subwindow>div>:first-child {
-    color: rgb(152,195,121);
+    color: var(--confirm-color);
 }
 .subwindow>div>:last-child {
-    color: rgb(224,108,117);
+    color: var(--warning-color);
 }
 .subwindow>div>div:active {
-    background-color: rgba(180,180,180,0.25);
+    background-color: var(--click-color);
 }
 </style>

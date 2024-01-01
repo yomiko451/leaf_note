@@ -97,6 +97,7 @@ impl Config {
             cover_url: PathBuf::new(),
             city: "安庆".to_string(),
             weather: Weather::new()
+            // resolution: (usize, usize) // TODO
         }
     }
 }
@@ -118,6 +119,12 @@ impl Weather {
             weather: "暂无信息".to_string(),
         }
     }
+}
+
+enum UiScale { // TODO
+    Small = 0,
+    Medium = 1,
+    Large = 2
 }
 
 #[cfg(test)]

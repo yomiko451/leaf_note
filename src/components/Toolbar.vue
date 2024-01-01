@@ -46,7 +46,7 @@ emit('sendFunction', resetIndex)
   
 <style scoped>
 .toolbar {
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -60,18 +60,11 @@ emit('sendFunction', resetIndex)
     user-select: none;
     transition: all 0.1s;
     cursor: pointer;
-    border: 0.2rem solid rgb(40,44,52);
 }
 .toolbar>div:hover {
-    border: 0.2rem solid rgb(180,180,180);
-}
-.toolbar>div:active {
-    background-color: rgb(180,180,180);
-    border: 0.2rem solid rgb(40,44,52);
-    color: rgb(40,44,52);
+    background-color: var(--click-color);    
 }
 .selected {
-    background-color: rgb(180,180,180);
-    color: rgb(40,44,52);
+    background-color: var(--click-color); 
 }
 </style>

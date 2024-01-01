@@ -36,6 +36,12 @@ interface Config {
     weather: Weather
 }
 
+enum UiScale { //TODO
+    Small = 0,
+    Medium = 1,
+    Large = 2
+}
+
 export type {
     Note,
     TodoList,

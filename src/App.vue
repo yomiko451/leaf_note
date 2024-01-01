@@ -45,7 +45,7 @@ async function initialize() {
   gap: 0.5rem;
   box-sizing: border-box;
   padding: 0.5rem;
-  background-color: rgb(33,37,43);
+  background-color: var(--secondry-color);
   border-radius: 0;
 }
 .infobar {

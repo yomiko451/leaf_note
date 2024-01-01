@@ -10,16 +10,16 @@
             <div>{{ config?.cover_filter? '开启' : '关闭' }}</div>
         </div>
         <div class="customize">
-            <p>窗口大小</p>
-            <div>正常</div>
+            <p>缩放比例</p>
+            <div>标准</div>
+        </div>
+        <div class="customize">
+            <p>主题颜色</p>
+            <div>深色</div>
         </div>
         <div class="customize">
             <p>显示字体</p>
-            <div>正常</div>
-        </div>
-        <div class="customize">
-            <p>显示字号</p>
-            <div>正常</div>
+            <div>微软雅黑</div>
         </div>
         <div class="folder">打开笔记保存文件夹</div>
         <div class="folder">打开待办保存文件夹</div>
@@ -50,7 +50,7 @@ provide('SWC', subwindowClose)
 .setting {
     width: 100%;
     height: 100%;
-    background-color: rgb(40,44,52);
+    background-color: var(--primiary-color);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -66,45 +66,33 @@ provide('SWC', subwindowClose)
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: rgb(180,180,180);
+    color: var(--letter-color);
     cursor: pointer;
     box-sizing: border-box;
-    border: 0.2rem solid rgb(40,44,52);
     transition: all 0.1s;
 }
 .setting>.customize>p {
-    line-height: 3.6rem;
+    line-height: 4rem;
     color: inherit;
 }
 .setting>.customize>div {
-    line-height: 3.6rem;
+    line-height: 4rem;
     color: inherit;
 }
 .setting>.customize:hover {
-    border: 0.2rem solid rgb(180,180,180);
-}
-.setting>.customize:active {
-    background-color: rgb(180,180,180);
-    border: 0.2rem solid rgb(40,44,52);
-    color: rgb(40,44,52);
+    background-color: var(--click-color);
 }
 .setting>.folder {
     height: 4rem;
     margin: 0.5rem 0;
     padding: 0 1rem;
-    line-height: 3.6rem;
+    line-height: 4rem;
     text-align: center;
     cursor: pointer;
     box-sizing: border-box;
     transition: all 0.1s;
-    border: 0.2rem solid rgb(40,44,52);
 }
 .setting>.folder:hover {
-    border: 0.2rem solid rgb(180,180,180);
-}
-.setting>.folder:active {
-    background-color: rgb(180,180,180);
-    border: 0.2rem solid rgb(40,44,52);
-    color: rgb(40,44,52);
+    background-color: var(--click-color);
 }
 </style>
