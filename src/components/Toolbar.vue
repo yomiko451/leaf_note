@@ -10,7 +10,6 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import {Note} from '../types'
 
 const selectedIndex = ref<number>(2)
 const router = useRouter()
@@ -18,15 +17,15 @@ const router = useRouter()
 
 function toContent() {
     selectedIndex.value = 0
-    if (parentData.filterNotes.length) {
-        router.push('/content')
-    } else {
+    if (noteIndex.noteIndex === -2) {
         router.push({
             path: '/empty',
             query: {
                 text: '暂无内容'
             }
         })
+    } else {
+        router.push('/content')
     }
 }
 
@@ -52,7 +51,7 @@ function resetIndex() {
 const emit = defineEmits(['sendFunction'])
 emit('sendFunction', resetIndex)
 
-const parentData = defineProps<{filterNotes: Array<Note>}>()
+const noteIndex = defineProps<{noteIndex: number}>()
 </script>
   
 <style scoped>
