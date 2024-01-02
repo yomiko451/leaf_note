@@ -28,8 +28,8 @@ async function initialize() {
   const todoListArr: Array<TodoList> = await invoke('load_todo_list');
   notes.reverse()
   todoListArr.reverse()
-  useNoteStore().updateNotes(notes);
-  useTodoStore().updateTodoArr(todoListArr);
+  useNoteStore().loadNotes(notes);
+  useTodoStore().loadTodoArr(todoListArr);
   useConfigStore().loadConfig() //TODO:判断封面有没有，没有去空白页面
   await invoke('show_main_window');
 }

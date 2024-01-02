@@ -9,16 +9,25 @@
   
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
-import { useNoteStore } from '../store/note';
 import { ref } from 'vue'
+import {Note} from '../types'
 
 const selectedIndex = ref<number>(2)
 const router = useRouter()
-const noteStore = useNoteStore()
+
 
 function toContent() {
-    noteStore.reset()
     selectedIndex.value = 0
+    if (parentData.filterNotes.length) {
+        router.push('/content')
+    } else {
+        router.push({
+            path: '/empty',
+            query: {
+                text: '暂无内容'
+            }
+        })
+    }
 }
 
 function toTodo() {
@@ -42,6 +51,8 @@ function resetIndex() {
 
 const emit = defineEmits(['sendFunction'])
 emit('sendFunction', resetIndex)
+
+const parentData = defineProps<{filterNotes: Array<Note>}>()
 </script>
   
 <style scoped>

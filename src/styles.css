@@ -1,13 +1,13 @@
 :root {
-  --primiary-color: rgb(40,44,52);
+  /* --primiary-color: rgb(40,44,52);
   --secondry-color: rgb(33,37,43);
   --letter-color: rgb(180,180,180);
-  --click-color: rgb(54,58,70);
+  --click-color: rgb(54,58,70); */
 
-  /* --primiary-color: rgb(240,240,240);
+  --primiary-color: rgb(240,240,240);
   --secondry-color: rgb(255,255,255);
   --letter-color: black; 
-  --click-color: rgb(220,220,220); */
+  --click-color: rgb(220,220,220);
 
   --confirm-color: rgb(152,195,121);
   --warning-color: rgb(224,108,117);

@@ -2,7 +2,7 @@ use tauri::AppHandle;
 use std::{fs, path::PathBuf};
 use chrono::Local;
 use rand::{self, Rng};
-use crate::{types::{Note, TodoList, Config}, spider};
+use crate::{types::{Note, TodoList, Config, Todo}, spider};
 
 #[tauri::command]
 pub fn check_requirements(app_handle: AppHandle) {
@@ -81,6 +81,25 @@ fn get_cover(cover_path: PathBuf) -> PathBuf {
 }
 
 #[tauri::command]
+pub fn create_note(app_handle: AppHandle) -> Note {
+    let note = Note::new();
+    save_note(app_handle, note.clone());
+    note
+}
+
+#[tauri::command]
+pub fn create_todo_list(app_handle: AppHandle, title: String) -> TodoList {
+    let todo_list = TodoList::new(title);
+    save_todo_list(app_handle, todo_list.clone());
+    todo_list
+}
+
+#[tauri::command]
+pub fn create_todo(content: String) -> Todo {
+    Todo::new(content)
+}
+
+#[tauri::command]
 pub fn update_config(app_handle: AppHandle, config: Config) {
     let path = app_handle.path_resolver().app_local_data_dir().unwrap().join("config.json");
     let file = fs::File::create(path).unwrap();
@@ -95,8 +114,8 @@ pub fn save_note(app_handle: AppHandle, note: Note) {
 }
 
 #[tauri::command]
-pub fn delete_note(app_handle: AppHandle, item: Note) {
-    let path = app_handle.path_resolver().app_local_data_dir().unwrap().join(format!("note/{}.json", item.id));
+pub fn delete_note(app_handle: AppHandle, note: Note) {
+    let path = app_handle.path_resolver().app_local_data_dir().unwrap().join(format!("note/{}.json", note.id));
     fs::remove_file(path).unwrap();
 }
 
@@ -108,7 +127,7 @@ pub fn save_todo_list(app_handle: AppHandle, todo_list: TodoList) {
 }
 
 #[tauri::command]
-pub fn delete_todo_list(app_handle: AppHandle, item: TodoList) {
-    let path = app_handle.path_resolver().app_local_data_dir().unwrap().join(format!("todo/{}.json", item.id));
+pub fn delete_todo_list(app_handle: AppHandle, todo_list: TodoList) {
+    let path = app_handle.path_resolver().app_local_data_dir().unwrap().join(format!("todo/{}.json", todo_list.id));
     fs::remove_file(path).unwrap();
 }

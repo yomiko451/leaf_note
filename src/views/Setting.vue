@@ -15,7 +15,7 @@
         </div>
         <div class="customize">
             <p>主题颜色</p>
-            <div>深色</div>
+            <div>浅色</div>
         </div>
         <div class="customize">
             <p>显示字体</p>

@@ -14,9 +14,9 @@ fn main() {
             storage::load_todo_list,
             storage::load_config,
             storage::update_config,
-            serve::create_note,
-            serve::create_todo_list,
-            serve::create_todo,
+            storage::create_note,
+            storage::create_todo_list,
+            storage::create_todo,
             serve::get_time,
             serve::show_main_window,
             spider::get_weather

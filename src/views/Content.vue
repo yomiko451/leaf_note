@@ -23,7 +23,7 @@ import useDialog from '../hooks/useDialog'
 
 const tag = ref<string>('')
 const noteStore = useNoteStore();
-const {selectedNote, selectedNoteIndex} = storeToRefs(noteStore);
+const {selectedNote} = storeToRefs(noteStore);
 const {showWarningDialog, showAskDialog} = useDialog()
 
 const saveInfo = computed(()=>{
@@ -49,7 +49,7 @@ function debounce(func: Function) {
     }
     timerId = setTimeout(() => {
         func()
-    }, 1500);
+    }, 1000);
 }
 
 function addTag() {
@@ -64,8 +64,8 @@ function addTag() {
 async function deleteSelectedNote() {
         let res = await showAskDialog(`确定删除笔记 ${selectedNote.value.title} ？`)
         if (res) {
-            noteStore.deleteNote(selectedNote.value, selectedNoteIndex.value);
-            noteStore.reset()
+            noteStore.deleteNote(selectedNote.value);
+            //TODO: 刷新页面
         } 
 }
 </script>
