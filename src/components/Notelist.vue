@@ -2,16 +2,24 @@
     <div class="notelist">
         <Toolbar @sendFunction="getFunction" :noteIndex="noteIndex"/>
         <input type="text" v-model="keyword" placeholder="请输入关键词">
+        <div class="searchbox" v-show="isShow">
+            <ol v-for="note in filterNotes" :key="note.id">
+                <li @click="toSearchContent(note)">{{ note.title }}</li>
+            </ol>
+            <p>{{ result }}</p>
+        </div>
         <ol>
             <li @click="addNote">
                 <h1>添加新笔记</h1>
                 <span>添加标记可以让笔记变得更加醒目</span>
                 <p>笔记内容支持实时自动保存</p>
             </li>
-            <li v-for="note, index in filterNotes" 
+            <li v-for="note, index in notes" 
+                id="notes"
                 :key="note.id" 
                 @click="toContent(note, index)"
-                :class="{clicked: noteIndex === index}">
+                :class="{clicked: noteIndex === index}"
+                :scrollTop="noteIndex">
                 <h1>{{ note.title? note.title : '无标题' }}</h1>
                 <span>{{ note.created_at }} -- {{ note.updated_at }}</span>
                 <p>{{ note.content? note.content : '无内容' }}</p>
@@ -28,8 +36,9 @@ import { useNoteStore } from '../store/note'
 import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
+const isShow = ref<boolean>(false)
 const keyword = ref<string>('')
-const noteIndex = ref<number>(-2) // -2: 删除笔记后或笔记数量为空时，展示空白页，-1: 有笔记，但不选中任何笔记，0: 选中新增笔记
+const noteIndex = ref<number>(-1) 
 const noteStore = useNoteStore()
 const {notes} = storeToRefs(noteStore)
 const router = useRouter()
@@ -41,28 +50,35 @@ const filterNotes = computed(()=>{
     })
 })
 
-// 这个逻辑太丑陋了！！！！！
+const result = computed(()=>{
+    if (filterNotes.value.length) {
+        return `共检索到 ${filterNotes.value.length} 项内容`
+    } else {
+        return '没有检索到相关内容'
+    }
+})
+
+watch(keyword, (newValue)=>{
+    if (newValue) {
+        isShow.value = true
+    } else {
+        isShow.value = false
+    }
+})
+
 let onceflag = true
-watch([()=>notes.value.length, keyword], (newValue, oldValue)=>{
+watch(()=>notes.value.length, (newValue, oldValue)=>{
     if (onceflag) {
         onceflag = false
         return
     }
-    resetIndex()
-    if (newValue[0] < oldValue[0] || newValue[0]===0) { // 删除笔记或笔记数量为空，展示空白页
-        noteIndex.value = -2
-        router.push({
-            path: '/empty',
-            query: {
-                text: '暂无内容'
-            }
-        })
-    } else if(newValue[0] > oldValue[0]) { // 新增笔记
-        noteIndex.value = 0
-    } else { // 不选中任何笔记，保持内容页不变
+    if (newValue<oldValue) {
         noteIndex.value = -1
+        router.push('/empty')
+    } else if (newValue>oldValue) {
+        noteIndex.value = 0
     }
-})
+}) 
 
 function getFunction(func: Function) {
     resetIndex = func
@@ -73,6 +89,14 @@ function toContent(note: Note, index: number) {
     router.push('/content')
     noteIndex.value = index
     resetIndex()
+}
+
+function toSearchContent(note: Note) {
+    const index = noteStore.getNoteIndex(note)
+    const element = document.getElementsByTagName("li")[index]
+    element.scrollIntoView()
+    toContent(note, index)
+    keyword.value = ''
 }
 
 function addNote() {
@@ -89,14 +113,42 @@ function addNote() {
     display: grid;
     grid-template-rows: 6rem 3rem 1fr;
     gap: 0.5rem;
+    position: relative;
 }
 .notelist>input {
     font-size: 1.5rem;
     padding: 0 0.5rem;
     background-color: var(--primiary-color);
     outline: none;
-    transition: all 0.1s;
     border: none;
+}
+.notelist>.searchbox {
+    position: absolute;
+    top: 10rem;
+    left: 0;
+    width: 100%;
+    background-color: var(--primiary-color);
+    transition: all 0.1s;
+    box-shadow: 0 1rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+.notelist>.searchbox>ol {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+}
+.notelist>.searchbox>ol>li {
+    font-size: 1.5rem;
+    line-height: 3rem;
+    padding: 0 0.5rem;
+}
+
+.notelist>.searchbox>ol>li:hover {
+    background-color: var(--click-color);
+}
+.notelist>.searchbox>p {
+    font-size: 1.5rem;
+    margin: 0.5rem;
+    user-select: none;
 }
 .notelist>ol {
     background-color: var(--primiary-color);

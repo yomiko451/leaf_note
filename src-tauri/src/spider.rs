@@ -1,6 +1,5 @@
 use std::error::Error;
 use reqwest::Client;
-use scraper::{Selector, Html}; //TODO: use html5ever
 use serde_json::Value;
 use crate::types::Weather;
 

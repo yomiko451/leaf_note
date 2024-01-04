@@ -7,9 +7,15 @@ export const useConfigStore = defineStore('config', ()=>{
     const config = ref<Config | null>();
 
     async function loadConfig(){
-        config.value = await invoke('load_config');
+        config.value = await invoke('load_config');        
     }
 
+    function setBasicConfig() {
+        if (config.value) {
+            document.body.style.fontFamily = config.value.font_family;
+            //TODO:判断封面有没有，没有去空白页面
+        }
+    }
     async function updateWeather(city: string) {
         if (config.value) {
             const weather: Weather = await invoke('get_weather', {city})
@@ -17,7 +23,6 @@ export const useConfigStore = defineStore('config', ()=>{
             config.value.weather = weather
             await invoke('update_config', {config: config.value})
         }
-        
     }
 
     async function updateCoverFilter() {
@@ -27,10 +32,20 @@ export const useConfigStore = defineStore('config', ()=>{
         }
     }
 
+    async function updateFontFamily(font: string) {
+        if (config.value) {
+            document.body.style.fontFamily = font;
+            config.value.font_family = font;
+            await invoke('update_config', {config: config.value})
+        }
+      }
+
     return {
         config,
         loadConfig,
+        setBasicConfig,
         updateWeather,
-        updateCoverFilter
+        updateCoverFilter,
+        updateFontFamily
     }
 })

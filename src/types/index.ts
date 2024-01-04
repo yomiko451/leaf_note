@@ -32,15 +32,16 @@ interface Config {
     cover_filter: boolean,
     cover_url: string,
     font_size: number,
+    font_family: string,
     city: string,
     weather: Weather
 }
 
-enum UiScale { //TODO
-    Small = 0,
-    Medium = 1,
-    Large = 2
-}
+// enum UiScale { //TODO
+//     Small = 0,
+//     Medium = 1,
+//     Large = 2
+// }
 
 export type {
     Note,

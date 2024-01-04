@@ -44,6 +44,10 @@ export const useNoteStore = defineStore('note', ()=>{
         selectedNote.value = newNote
     }
 
+    const getNoteIndex = (note: Note) => {
+        return notes.value.findIndex(n => n.id === note.id)
+    }
+
     const changeNoteStarred = () => {
         selectedNote.value.starred = !selectedNote.value.starred
     }
@@ -74,6 +78,7 @@ export const useNoteStore = defineStore('note', ()=>{
         saveNote,
         changeNoteStarred,
         updateSelectedNote,
+        getNoteIndex,
         deleteNote,
         addTag,
         deleteTag

@@ -65,7 +65,6 @@ async function deleteSelectedNote() {
         let res = await showAskDialog(`确定删除笔记 ${selectedNote.value.title} ？`)
         if (res) {
             noteStore.deleteNote(selectedNote.value);
-            //TODO: 刷新页面
         } 
 }
 </script>
@@ -135,6 +134,7 @@ async function deleteSelectedNote() {
     background-color: var(--primiary-color);
     padding: 0.5rem 1rem;
     font-size: 2rem;
+    font-family: inherit;
     text-align: justify;
     line-height: 3rem;
     box-sizing: border-box;

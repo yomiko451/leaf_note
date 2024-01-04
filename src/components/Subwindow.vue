@@ -1,6 +1,6 @@
 <template>
     <div class="subwindow">
-        <p>请输入城市名称</p>
+        <p>{{ title }}</p>
         <input type="text" v-model="text">
         <div>
             <div @click="confirm(text)">确定</div>
@@ -11,23 +11,23 @@
 
 <script lang="ts" setup>
 import { ref, inject } from 'vue';
-import { useConfigStore } from '../store/config';
 import useDialog from '../hooks/useDialog';
 
 const text = ref<string>('')
-const configStore = useConfigStore();
 const {showSuccessDialog, showWarningDialog} = useDialog();
 const subwindowClose = inject('SWC') as Function ;
 
 async function confirm(text: string) {
     if (text) {
-        configStore.updateWeather(text);
-        await showSuccessDialog('天气信息更新成功！')
+        parent.func(text);
+        await showSuccessDialog('设定更新完成！')
         subwindowClose()
     } else {
-        await showWarningDialog('城市名称不能为空！')
+        await showWarningDialog('内容不能为空！')
     }
 }
+
+const parent = defineProps<{title: string, func: Function}>()
 </script>
 
 <style scoped>
@@ -44,6 +44,7 @@ async function confirm(text: string) {
     justify-content: space-between;
     position: fixed;
     background-color: var(--secondry-color);
+    box-shadow: 0 1rem 1rem 0 rgba(0, 0, 0, 0.1);
 }
 .subwindow>p {
     font-size: 2rem;

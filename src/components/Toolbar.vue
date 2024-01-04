@@ -17,13 +17,8 @@ const router = useRouter()
 
 function toContent() {
     selectedIndex.value = 0
-    if (noteIndex.noteIndex === -2) {
-        router.push({
-            path: '/empty',
-            query: {
-                text: '暂无内容'
-            }
-        })
+    if (noteIndex.noteIndex === -1) {
+        router.push('/empty')
     } else {
         router.push('/content')
     }

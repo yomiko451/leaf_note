@@ -1,14 +1,10 @@
 <template>
     <div class="empty">
-        <p>{{ text }}</p>
+        <p>暂无内容</p>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { useRoute } from 'vue-router'
-
-const router = useRoute()
-const text = router.query.text as string
 
 </script>
 

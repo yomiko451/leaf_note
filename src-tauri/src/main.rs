@@ -1,6 +1,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 use leaf_note::{storage, serve, spider};
-use tauri::Manager;
 
 fn main() {
     tauri::Builder::default()
@@ -21,13 +20,6 @@ fn main() {
             serve::show_main_window,
             spider::get_weather
         ])
-        .setup(|app| {
-            let main_window = app.get_window("main").unwrap();
-            tauri::async_runtime::spawn(async move {
-                //TODO: 初始化
-            });
-            Ok(())
-        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

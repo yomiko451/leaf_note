@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <Infobar/>
     <Notelist/>
     <div class="view">
       <RouterView></RouterView>
@@ -10,7 +9,6 @@
 </template>
 
 <script lang="ts" setup>
-import Infobar from './components/Infobar.vue'
 import Notelist from './components/Notelist.vue'
 import Statusbar from './components/Statusbar.vue'
 import { RouterView } from 'vue-router';
@@ -30,7 +28,8 @@ async function initialize() {
   todoListArr.reverse()
   useNoteStore().loadNotes(notes);
   useTodoStore().loadTodoArr(todoListArr);
-  useConfigStore().loadConfig() //TODO:判断封面有没有，没有去空白页面
+  await useConfigStore().loadConfig()
+  useConfigStore().setBasicConfig()
   await invoke('show_main_window');
 }
 </script>
@@ -40,7 +39,7 @@ async function initialize() {
   height: 100vh;
   width: 100vw;
   display: grid;
-  grid-template-rows: 6rem 1fr 3rem;
+  grid-template-rows: 1fr 3rem;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
   box-sizing: border-box;
@@ -48,21 +47,17 @@ async function initialize() {
   background-color: var(--secondry-color);
   border-radius: 0;
 }
-.infobar {
-  grid-row: 1/2;
-  grid-column: 1/3;
-}
 .notelist {
-  grid-row: 2/3;
+  grid-row: 1/2;
   grid-column: 1/2;
 }
 .view {
-  grid-row: 2/3;
+  grid-row: 1/2;
   grid-column: 2/3;
   min-height: 0;
 }
 .statusbar {
-  grid-row: 3/4;
+  grid-row: 2/3;
   grid-column: 1/3;
 }
 </style>

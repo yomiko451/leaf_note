@@ -1,7 +1,7 @@
 <template>
     <div class="setting">
-        <Subwindow v-if="subwindowShow"/>
-        <div class="customize" @click="subwindowShow = true">
+        <Subwindow v-if="subwindowShow" :title="title" :func="func" />
+        <div class="customize" @click="setWeather">
             <p>天气查询对应城市</p>
             <div>{{ config?.city }}</div>
         </div>
@@ -17,9 +17,9 @@
             <p>主题颜色</p>
             <div>浅色</div>
         </div>
-        <div class="customize">
+        <div class="customize" @click="setFont">
             <p>显示字体</p>
-            <div>微软雅黑</div>
+            <div>{{ config?.font_family }}</div>
         </div>
         <div class="folder">打开笔记保存文件夹</div>
         <div class="folder">打开待办保存文件夹</div>
@@ -33,7 +33,8 @@ import { storeToRefs } from 'pinia';
 import Subwindow from '../components/Subwindow.vue'
 import { ref, provide } from 'vue';
 
-
+const title = ref<string>('');
+const func = ref<Function>(()=>{});
 const subwindowShow = ref(false);
 const configStore = useConfigStore();
 const {config} = storeToRefs(configStore);
@@ -43,6 +44,17 @@ function subwindowClose() {
 }
 provide('SWC', subwindowClose)
 
+function setWeather() {
+    title.value = '请输入城市名称';
+    func.value = useConfigStore().updateWeather;
+    subwindowShow.value = true
+}
+
+function setFont() {
+    title.value = '请输入字体名称';
+    func.value = useConfigStore().updateFontFamily;
+    subwindowShow.value = true
+}
 </script>
 
 
@@ -61,7 +73,7 @@ provide('SWC', subwindowClose)
 .setting>.customize {
     width: 30rem;
     height: 4rem;
-    margin: 0.5rem 0;
+    margin: 1rem 0;
     padding: 0 1rem;
     display: flex;
     align-items: center;
@@ -84,7 +96,7 @@ provide('SWC', subwindowClose)
 }
 .setting>.folder {
     height: 4rem;
-    margin: 0.5rem 0;
+    margin: 1rem 0;
     padding: 0 1rem;
     line-height: 4rem;
     text-align: center;

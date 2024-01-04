@@ -85,6 +85,7 @@ pub struct Config {
     pub cover_filter: bool,
     pub cover_url: PathBuf,
     pub font_size: usize,
+    pub font_family: String,
     pub city: String,
     pub weather: Weather
 }
@@ -93,6 +94,7 @@ impl Config {
     pub fn new() -> Config {
         Config {
             font_size: 10,
+            font_family: "微软雅黑".to_string(),
             cover_filter: false,
             cover_url: PathBuf::new(),
             city: "安庆".to_string(),
@@ -121,11 +123,11 @@ impl Weather {
     }
 }
 
-enum UiScale { // TODO
-    Small = 0,
-    Medium = 1,
-    Large = 2
-}
+// enum UiScale { // TODO
+//     Small = 0,
+//     Medium = 1,
+//     Large = 2
+// }
 
 #[cfg(test)]
 mod tests {
