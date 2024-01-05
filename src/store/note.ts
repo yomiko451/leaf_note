@@ -12,7 +12,7 @@ export const useNoteStore = defineStore('note', ()=>{
         created_at: '',
         updated_at: '',
         tags: [],
-        starred: false
+        locked: false
     }
     const selectedNote = ref<Note>(emptyNote)
 
@@ -39,8 +39,8 @@ export const useNoteStore = defineStore('note', ()=>{
     }
 
     const updateSelectedNote = (note: Note) => {
-        const {id, title, content, created_at, updated_at, tags, starred} = note
-        const newNote: Note = {id, title, content, created_at, updated_at, tags, starred}
+        const {id, title, content, created_at, updated_at, tags, locked} = note
+        const newNote: Note = {id, title, content, created_at, updated_at, tags, locked}
         selectedNote.value = newNote
     }
 
@@ -48,8 +48,8 @@ export const useNoteStore = defineStore('note', ()=>{
         return notes.value.findIndex(n => n.id === note.id)
     }
 
-    const changeNoteStarred = () => {
-        selectedNote.value.starred = !selectedNote.value.starred
+    const changeNoteLocked = () => {
+        selectedNote.value.locked = !selectedNote.value.locked
     }
 
     const deleteNote = async (note: Note) => {
@@ -76,7 +76,7 @@ export const useNoteStore = defineStore('note', ()=>{
         loadNotes,
         addNote,
         saveNote,
-        changeNoteStarred,
+        changeNoteLocked,
         updateSelectedNote,
         getNoteIndex,
         deleteNote,

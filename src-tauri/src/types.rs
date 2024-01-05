@@ -21,7 +21,7 @@ pub struct Note {
     pub created_at: String,
     pub updated_at: String,
     pub tags: Vec<String>,
-    pub starred: bool
+    pub locked: bool
 }
 
 impl Note {
@@ -33,7 +33,7 @@ impl Note {
             created_at: Note::get_time(),
             updated_at: "暂无信息".to_string(),
             tags: vec![],
-            starred: false
+            locked: false
         }
     }
 }
@@ -87,7 +87,9 @@ pub struct Config {
     pub font_size: usize,
     pub font_family: String,
     pub city: String,
-    pub weather: Weather
+    pub weather: Weather,
+    pub ui_scale: usize,
+    pub ui_style: bool
 }
 
 impl Config {
@@ -98,8 +100,9 @@ impl Config {
             cover_filter: false,
             cover_url: PathBuf::new(),
             city: "安庆".to_string(),
-            weather: Weather::new()
-            // resolution: (usize, usize) // TODO
+            weather: Weather::new(),
+            ui_scale: 1,
+            ui_style: false
         }
     }
 }
@@ -122,12 +125,6 @@ impl Weather {
         }
     }
 }
-
-// enum UiScale { // TODO
-//     Small = 0,
-//     Medium = 1,
-//     Large = 2
-// }
 
 #[cfg(test)]
 mod tests {

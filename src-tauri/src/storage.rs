@@ -1,8 +1,8 @@
-use tauri::AppHandle;
-use std::{fs, path::PathBuf};
+use tauri::{AppHandle, Window};
+use std::{fs, path::PathBuf, process::Command};
 use chrono::Local;
 use rand::{self, Rng};
-use crate::{types::{Note, TodoList, Config, Todo}, spider};
+use crate::{types::{Note, TodoList, Config, Todo}, spider, serve};
 
 #[tauri::command]
 pub fn check_requirements(app_handle: AppHandle) {
@@ -48,12 +48,13 @@ pub fn load_todo_list(app_handle: AppHandle) -> Vec<TodoList> {
 }
 
 #[tauri::command]
-pub async fn load_config(app_handle: AppHandle) -> Config {
+pub async fn load_config(app_handle: AppHandle, window: Window) -> Config {
     let path = app_handle.path_resolver().app_local_data_dir().unwrap().join("config.json");
     let cover_path = app_handle.path_resolver().app_local_data_dir().unwrap().join("cover");
     let file = fs::File::open(&path).unwrap();
     let mut config: Config = serde_json::from_reader(&file).unwrap();
     config.cover_url = get_cover(cover_path);
+    serve::resize_main_window(window, config.ui_scale);
     check_date(app_handle, config).await
 }
 
@@ -130,4 +131,24 @@ pub fn save_todo_list(app_handle: AppHandle, todo_list: TodoList) {
 pub fn delete_todo_list(app_handle: AppHandle, todo_list: TodoList) {
     let path = app_handle.path_resolver().app_local_data_dir().unwrap().join(format!("todo/{}.json", todo_list.id));
     fs::remove_file(path).unwrap();
+}
+
+#[tauri::command]
+pub fn open_folder(app_handle: AppHandle, code: usize) {
+    let path = app_handle.path_resolver().app_local_data_dir().unwrap();
+    match code {
+        0 => {
+            Command::new("explorer.exe")
+               .arg(path.join("note")).spawn().unwrap();
+        },
+        1 => {
+            Command::new("explorer.exe")
+               .arg(path.join("todo")).spawn().unwrap();
+        },
+        2 => {
+            Command::new("explorer.exe")
+              .arg(path.join("cover")).spawn().unwrap();
+        },
+        _ => ()
+    };
 }

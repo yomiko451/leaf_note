@@ -9,7 +9,7 @@ import {computed} from 'vue'
 import { useConfigStore } from '../store/config';
 import { storeToRefs } from 'pinia';
 import { convertFileSrc } from '@tauri-apps/api/tauri'
-import defaultImg from '../assets/test.jpg'
+import defaultImg from '../assets/default.jpg'
 
 const configStore = useConfigStore();
 const {config} = storeToRefs(configStore);

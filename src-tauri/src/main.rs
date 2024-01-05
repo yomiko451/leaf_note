@@ -16,8 +16,10 @@ fn main() {
             storage::create_note,
             storage::create_todo_list,
             storage::create_todo,
+            storage::open_folder,
             serve::get_time,
             serve::show_main_window,
+            serve::resize_main_window,
             spider::get_weather
         ])
         .run(tauri::generate_context!())

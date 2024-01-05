@@ -3,8 +3,10 @@
         <input type="text" v-model="selectedNote.title" placeholder="请输入标题">
         <div class="data">
             <span class="saved">{{ saveInfo }}</span>
-            <div @click="noteStore.changeNoteStarred" :class="selectedNote.starred?'starred':''">星标</div>
-            <div @click="deleteSelectedNote">删除</div>
+            <div @click="noteStore.changeNoteLocked" :class="selectedNote.locked?'locked':''">锁定</div>
+            <div @click.self="deleteSelectedNote">删除
+                <div v-if="selectedNote.locked" class="disabled">--</div>
+            </div>
         </div>
         <textarea placeholder="请输入内容" v-model="selectedNote.content"></textarea>
         <div class="taglist">
@@ -34,7 +36,7 @@ watch([
     ()=>selectedNote.value.id,
     ()=>selectedNote.value.title, 
     ()=>selectedNote.value.content,
-    ()=>selectedNote.value.starred,
+    ()=>selectedNote.value.locked,
     ()=>selectedNote.value.tags,
 ], (newValue, oldValue)=>{
     if (newValue[0] === oldValue[0]) {
@@ -119,11 +121,20 @@ async function deleteSelectedNote() {
 }
 .content>.data>div:last-child {
     color: var(--warning-color);
+    position: relative;
+}
+.disabled {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primiary-color);
 }
 .content>.data>div:active {
     background-color: var(--click-color);
 }
-.starred {
+.locked {
     color: var(--confirm-color);
 }
 .content>textarea {

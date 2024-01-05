@@ -1,52 +1,40 @@
-interface Note {
+export interface Note {
     id: number,
     title: string,
     content: string,
     created_at: string,
     updated_at: string,
     tags: Array<string>,
-    starred: boolean
+    locked: boolean
 }
 
-interface TodoList {
+export interface TodoList {
     id: number,
     title: string,
     content: Array<Todo>,
     created_at: string
 }
 
-interface Todo {
+export interface Todo {
     id: number,
     content: string,
     completed: boolean
 }
 
-interface Weather {
+export interface Weather {
     date: string,
     direct: string,
     temperature: string,
     weather: string
 }
 
-interface Config {
+export interface Config {
     cover_filter: boolean,
     cover_url: string,
     font_size: number,
     font_family: string,
     city: string,
-    weather: Weather
-}
-
-// enum UiScale { //TODO
-//     Small = 0,
-//     Medium = 1,
-//     Large = 2
-// }
-
-export type {
-    Note,
-    TodoList,
-    Todo,
-    Weather,
-    Config
+    weather: Weather,
+    ui_scale: number,
+    ui_style: boolean
 }
