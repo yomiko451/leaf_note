@@ -1,12 +1,10 @@
 <template>
     <div class="statusbar">
-        <p>99/99</p>
-        <p>{{ config?.city }}</p>
-        <p>{{ config?.weather.date }}</p>
-        <p>{{ config?.weather.weather }}</p>
-        <p>{{ config?.weather.temperature }}</p>
-        <p>{{ config?.weather.direct }}</p>
-        <p>00000000.png</p>
+        <p>日期：{{ config?.weather.date }}</p>
+        <p>地区：{{ config?.city }}</p>
+        <p>天气：{{ config?.weather.weather }}</p>
+        <p>气温：{{ config?.weather.temperature }}</p>
+        <p>风向：{{ config?.weather.direct }}</p>
     </div>
 </template>
 
@@ -29,6 +27,7 @@ const {config} = storeToRefs(configStore);
     user-select: none;
 }
 .statusbar>p {
+    line-height: 2rem;
     font-size: 1.5rem;
 }
 </style>

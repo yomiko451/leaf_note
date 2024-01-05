@@ -149,6 +149,7 @@ async function deleteSelectedNote() {
     text-align: justify;
     line-height: 3rem;
     box-sizing: border-box;
+    word-break: break-all;
 }
 .content>.taglist {
     margin-top: 0.5rem;
