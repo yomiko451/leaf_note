@@ -3,8 +3,9 @@
         <Toolbar @sendFunction="getFunction" :noteIndex="noteIndex"/>
         <input type="text" v-model="keyword" placeholder="请输入关键词">
         <div class="searchbox" v-show="isShow">
-            <ol v-for="note in filterNotes" :key="note.id">
-                <li @click="toSearchContent(note)">{{ note.title }}</li>
+            <ol>
+                <li @click="toSearchContent(note)"
+                v-for="note in filterNotes" :key="note.id">{{ note.title }}</li>
             </ol>
             <p>{{ result }}</p>
         </div>
@@ -129,19 +130,22 @@ function addNote() {
     width: 100%;
     background-color: var(--primiary-color);
     transition: all 0.1s;
-    box-shadow: 0 1rem 1rem 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
 }
 .notelist>.searchbox>ol {
     display: flex;
     flex-direction: column;
     list-style: none;
 }
+.notelist>.searchbox>ol>li:first-child {
+    border-radius: 0.5rem 0.5rem 0 0;
+}
 .notelist>.searchbox>ol>li {
     font-size: 1.5rem;
     line-height: 3rem;
     padding: 0 0.5rem;
+    border-radius: 0;
 }
-
 .notelist>.searchbox>ol>li:hover {
     background-color: var(--click-color);
 }

@@ -5,10 +5,12 @@
       <RouterView></RouterView>
     </div>
     <Statusbar/>
+    <Contextmenu/>
   </div>
 </template>
 
 <script lang="ts" setup>
+import Contextmenu from './components/Contextmenu.vue';
 import Notelist from './components/Notelist.vue'
 import Statusbar from './components/Statusbar.vue'
 import { RouterView } from 'vue-router';
@@ -46,6 +48,7 @@ async function initialize() {
   padding: 0.5rem;
   background-color: var(--secondry-color);
   border-radius: 0;
+  position: relative;
 }
 .notelist {
   grid-row: 1/2;
