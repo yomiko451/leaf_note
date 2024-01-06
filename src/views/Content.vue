@@ -130,6 +130,7 @@ async function deleteSelectedNote() {
     width: 100%;
     height: 100%;
     background-color: var(--primiary-color);
+    cursor: not-allowed;
 }
 .content>.data>div:active {
     background-color: var(--click-color);

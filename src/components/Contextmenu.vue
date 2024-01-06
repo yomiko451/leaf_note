@@ -1,15 +1,17 @@
 <template>
     <ol class="contextmenu" v-show="isShow" id="contextmenu">
-        <li>剪切</li>
-        <li>复制</li>
-        <li>粘贴</li>
-        <li>全选</li>
-        <li>删除</li>
+        <li @click="cutText" @mousedown="getNoFocus">剪切</li>
+        <li @click="copyText" @mousedown="getNoFocus">复制</li>
+        <li @click="pasteText" @mousedown="getNoFocus">粘贴</li>
+        <li @click="selectAll" @mousedown="getNoFocus">全选</li>
+        <li @click="deleteText" @mousedown="getNoFocus">删除</li>
     </ol>
 </template>
 
 <script lang="ts" setup>
 import {ref} from 'vue'
+import {readText, writeText} from '@tauri-apps/api/clipboard'
+
 
 const isShow = ref<boolean>(false)
 document.addEventListener('click', (e)=>{
@@ -18,7 +20,7 @@ document.addEventListener('click', (e)=>{
     }
 })
 document.oncontextmenu = (e) => {
-    // e.preventDefault(); // TODO:最后记得关闭菜单
+    e.preventDefault(); // TODO:最后记得关闭菜单
     let element = e.target as HTMLElement
     if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
         const menu = document.getElementById('contextmenu')
@@ -35,7 +37,7 @@ document.oncontextmenu = (e) => {
             } else {
                 menu.style.left = e.clientX + 'px'
             }
-            if (e.clientY + (10*rem) >= height) {
+            if (e.clientY + (16*rem) >= height) {
                 menu.style.bottom = (height - e.clientY) + 'px'
             } else {
                 menu.style.top = e.clientY + 'px'
@@ -43,7 +45,55 @@ document.oncontextmenu = (e) => {
         }
         isShow.value = true
     }
-  }
+}
+
+async function copyText() {
+    const selectelement = document.activeElement as HTMLInputElement
+    if (selectelement.selectionStart !== null && selectelement.selectionEnd !== null) {
+        const text = selectelement.value.substring(selectelement.selectionStart, selectelement.selectionEnd)
+        await writeText(text)
+    }
+}
+
+async function cutText() {
+    const selectelement = document.activeElement as HTMLInputElement
+    if (selectelement.selectionStart!== null && selectelement.selectionEnd!== null) {
+        const text = selectelement.value.substring(selectelement.selectionStart, selectelement.selectionEnd)
+        await writeText(text)
+        const temp = selectelement.selectionStart
+        selectelement.value = selectelement.value.substring(0, selectelement.selectionStart) + selectelement.value.substring(selectelement.selectionEnd)
+        selectelement.selectionStart = selectelement.selectionEnd = temp
+    }
+}
+
+async function pasteText() {
+    const selectelement = document.activeElement as HTMLInputElement
+    if (selectelement.selectionStart!== null && selectelement.selectionEnd!== null) {
+        const text = await readText()
+        selectelement.value = selectelement.value.substring(0, selectelement.selectionStart) + text + selectelement.value.substring(selectelement.selectionEnd)
+    }
+}
+
+function selectAll() {
+    const selectelement = document.activeElement as HTMLInputElement
+    if (selectelement.selectionStart!== null && selectelement.selectionEnd!== null) {
+        selectelement.selectionStart = 0
+        selectelement.selectionEnd = selectelement.value.length
+    }
+}
+
+function deleteText() {
+    const selectelement = document.activeElement as HTMLInputElement
+    if (selectelement.selectionStart!== null && selectelement.selectionEnd!== null) {
+        const temp = selectelement.selectionStart
+        selectelement.value = selectelement.value.substring(0, selectelement.selectionStart) + selectelement.value.substring(selectelement.selectionEnd)
+        selectelement.selectionStart = selectelement.selectionEnd = temp
+    }
+}
+
+function getNoFocus(e: MouseEvent) {
+    e.preventDefault()
+}
 </script>
 
 <style scoped>
@@ -52,7 +102,7 @@ document.oncontextmenu = (e) => {
     width: 10rem;
     background-color: var(--primiary-color);
     list-style: none;
-    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 1rem 0.25rem rgba(0, 0, 0, 0.1);
     padding: 0.5rem;
 }
 .contextmenu>li:first-child {
@@ -68,6 +118,7 @@ document.oncontextmenu = (e) => {
     cursor: pointer;
     transition: all 0.1s;
     border-radius: 0;
+    user-select: none;
 }
 .contextmenu>li:hover {
     background-color: var(--click-color);

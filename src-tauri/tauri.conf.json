@@ -24,6 +24,11 @@
         "open": false,
         "save": false
       },
+      "clipboard": {
+        "all": false,
+        "readText": true,
+        "writeText": true
+      },
       "protocol": {
         "all": false,
         "asset": true,
