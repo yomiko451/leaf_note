@@ -148,7 +148,7 @@ async function deleteSelectedNote() {
     font-size: 2rem;
     font-family: inherit;
     text-align: justify;
-    line-height: 3rem;
+    line-height: 3.5rem;
     box-sizing: border-box;
     word-break: break-all;
 }

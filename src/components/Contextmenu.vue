@@ -20,7 +20,7 @@ document.addEventListener('click', (e)=>{
     }
 })
 document.oncontextmenu = (e) => {
-    e.preventDefault(); // TODO:最后记得关闭菜单
+    e.preventDefault(); 
     let element = e.target as HTMLElement
     if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
         const menu = document.getElementById('contextmenu')
@@ -102,7 +102,7 @@ function getNoFocus(e: MouseEvent) {
     width: 10rem;
     background-color: var(--primiary-color);
     list-style: none;
-    box-shadow: 0 0 1rem 0.25rem rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 1rem 0.25rem var(--context-color);
     padding: 0.5rem;
 }
 .contextmenu>li:first-child {

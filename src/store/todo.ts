@@ -18,7 +18,7 @@ export const useTodoStore = defineStore('todo', ()=>{
 
     const deleteTodoList = async (index: number)=>{
         const todoList = todoListArr.value[index]
-        await invoke('delete_todo_list', {todo_list: todoList})
+        await invoke('delete_todo_list', {todoList: todoList})
         todoListArr.value.splice(index, 1)
     }
 

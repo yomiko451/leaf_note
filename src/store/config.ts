@@ -31,12 +31,14 @@ export const useConfigStore = defineStore('config', ()=>{
                     root.style.setProperty('--secondry-color', 'rgb(33,37,43)')
                     root.style.setProperty('--letter-color', 'rgb(180,180,180)')
                     root.style.setProperty('--click-color', 'rgb(54,58,70)')
+                    root.style.setProperty('--context-color', 'rgba(0, 0, 0, 0.5)')
                     break;
                 case false:
-                    root.style.setProperty('--primiary-color', 'rgb(240,240,240)')
+                    root.style.setProperty('--primiary-color', 'rgb(247,247,247)')
                     root.style.setProperty('--secondry-color', 'rgb(255,255,255)')
-                    root.style.setProperty('--letter-color', 'black')
-                    root.style.setProperty('--click-color', 'rgb(220,220,220)')
+                    root.style.setProperty('--letter-color', 'rgb(75,75,75)')
+                    root.style.setProperty('--click-color', 'rgb(235,235,235)')
+                    root.style.setProperty('--context-color', 'rgba(0, 0, 0, 0.1)')
                     break;
             }
             //TODO:判断封面有没有，没有去空白页面

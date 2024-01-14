@@ -10,10 +10,8 @@
             <p>{{ result }}</p>
         </div>
         <ol>
-            <li @click="addNote">
+            <li class="addnote" @click="addNote">
                 <h1>添加新笔记</h1>
-                <span>添加标记可以让笔记变得更加醒目</span>
-                <p>笔记内容支持实时自动保存</p>
             </li>
             <li v-for="note, index in notes" 
                 id="notes"
@@ -47,7 +45,7 @@ let resetIndex: Function = ()=>{}
 
 const filterNotes = computed(()=>{
     return notes.value.filter(note => {
-        return note.title.includes(keyword.value) || note.content.includes(keyword.value)
+        return note.title.includes(keyword.value) || note.content.includes(keyword.value) || note.tags.some(tag => tag.includes(keyword.value))
     })
 })
 
@@ -167,13 +165,14 @@ function addNote() {
     transition: all 0.1s;
     user-select: none;
     padding: 0.5rem 1rem;
-    margin: 0.5rem 0;
+    margin: 1rem 0;
 }
 .notelist>ol>li:hover {
     background-color: var(--click-color);
 }
 .notelist>ol>li>h1 {
     font-size: 2rem;
+    font-weight: normal;
     color: inherit;
     white-space: nowrap; 
     overflow: hidden; 
@@ -182,6 +181,7 @@ function addNote() {
 .notelist>ol>li>span {
     font-size: 1rem;
     color: inherit;
+    margin: 0.5rem 0;
 }
 .notelist>ol>li>p {
     font-size: 1.5rem;
@@ -189,6 +189,12 @@ function addNote() {
     white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis;
+}
+.notelist>ol>li.addnote {
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: row;
+    color: var(--confirm-color);
 }
 .clicked {
     background-color: var(--click-color);
