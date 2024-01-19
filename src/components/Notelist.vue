@@ -153,6 +153,8 @@ function addNote() {
     user-select: none;
 }
 .notelist>ol {
+    display: flex;
+    flex-direction: column;
     background-color: var(--primiary-color);
     padding: 0.5rem 1rem;
     overflow: scroll;
@@ -165,7 +167,7 @@ function addNote() {
     transition: all 0.1s;
     user-select: none;
     padding: 0.5rem 1rem;
-    margin: 1rem 0;
+    margin: 0.5rem 0;
 }
 .notelist>ol>li:hover {
     background-color: var(--click-color);

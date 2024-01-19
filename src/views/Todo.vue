@@ -214,6 +214,9 @@ function calculateCount(content: Array<Todo>) {
 .todo>.groups>li>.items {
     display: flex;
     flex-direction: column;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    background-color: var(--primiary-color);
 }
 .todo>.groups>li>.items>li {
     display: flex;

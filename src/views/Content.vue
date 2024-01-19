@@ -3,7 +3,7 @@
         <input type="text" v-model="selectedNote.title" placeholder="请输入标题">
         <div class="data">
             <span class="saved">{{ saveInfo }}</span>
-            <div @click="noteStore.changeNoteLocked" :class="selectedNote.locked?'locked':''">锁定</div>
+            <div @click="noteStore.changeNoteLocked" :class="selectedNote.locked?'':'locked'">{{ lockstate }}</div>
             <div @click.self="deleteSelectedNote">删除
                 <div v-if="selectedNote.locked" class="disabled">--</div>
             </div>
@@ -32,11 +32,14 @@ const saveInfo = computed(()=>{
     return '最后保存于：' + selectedNote.value.updated_at
 })
 
+const lockstate = computed(()=>{
+    return selectedNote.value.locked?'解锁':'锁定'
+})
+
 watch([
     ()=>selectedNote.value.id,
     ()=>selectedNote.value.title, 
     ()=>selectedNote.value.content,
-    ()=>selectedNote.value.locked,
     ()=>selectedNote.value.tags,
 ], (newValue, oldValue)=>{
     if (newValue[0] === oldValue[0]) {
