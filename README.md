@@ -1,6 +1,6 @@
 # leafnote
 
-一个轻量的笔记应用
+一个简单、轻量的笔记应用
 
 A simple and lightweight note-taking app
 
