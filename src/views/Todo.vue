@@ -7,8 +7,9 @@
         </div>
         <ol class="groups">
             <li v-for="todoList, index in todoListArr" :key="todoList.id">
-                <div class="title">
-                    <p>{{ todoList.title }}</p>
+                <div class="title"> 
+                    <input type="text" :value="todoList.title" v-show="renameWindow === index">  
+                    <p @click="rename(index, $event)">{{ todoList.title }}</p>
                     <p>{{ calculateCount(todoList.content) }}</p>
                     <div @click="deleteTodoList(index, todoList.title)">删除</div>
                 </div>
@@ -34,8 +35,9 @@ import useDialog from '../hooks/useDialog'
 import { storeToRefs } from 'pinia';
 import { useTodoStore } from '../store/todo';
 import { Todo } from '../types'
-import {ref, computed} from 'vue'
+import {ref, computed, nextTick} from 'vue'
 
+const renameWindow = ref<number>(-1)
 const todoStore = useTodoStore()
 const {todoListArr} = storeToRefs(todoStore)
 const {showWarningDialog, showAskDialog} = useDialog()
@@ -92,6 +94,23 @@ function addTodo(element: HTMLInputElement, index: number) {
 function stateChange(item: Todo, index: number, subindex: number) {
     item.completed =! item.completed
     todoStore.updateTodo(item, index, subindex)
+}
+
+function rename(index: number, event: MouseEvent) {
+    renameWindow.value = index
+    const element = event.target as HTMLElement
+    const bro_element = element.previousElementSibling as HTMLInputElement
+    bro_element.style.width = `${element.offsetWidth}px`
+    bro_element.selectionStart = 0
+    bro_element.selectionEnd = bro_element.value.length
+    nextTick(() => {
+        bro_element.focus()
+        bro_element.addEventListener('blur', ()=>{
+            todoListArr.value[index].title = bro_element.value
+            todoStore.saveTodoList(todoListArr.value[index])
+            renameWindow.value=-1
+        })//TODO:事项重命名
+    })
 }
 
 function calculateCount(content: Array<Todo>) {
@@ -162,13 +181,27 @@ function calculateCount(content: Array<Todo>) {
 }
 .todo>.groups>li>.title {
     display: flex;
+    position: relative;
 }
-.todo>.groups>li>.title>:first-child {
+.todo>.groups>li>.title>:nth-child(2) {
     white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis;
+    cursor: pointer;
 }
-.todo>.groups>li>.title>:nth-child(2) {
+.todo>.groups>li>.title>input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0 0.5rem;
+    height: 3rem;
+    font-size: 2rem;
+    line-height: 3rem;
+    border: none;
+    outline: none;
+    background-color: var(--primiary-color);
+}
+.todo>.groups>li>.title>p:nth-child(3) {
     white-space: nowrap; 
 }
 .todo>.groups>li>.title>div {

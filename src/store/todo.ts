@@ -47,6 +47,7 @@ export const useTodoStore = defineStore('todo', ()=>{
         loadTodoArr,
         addTodoList,
         deleteTodoList,
+        saveTodoList,
         addTodo,
         updateTodo,
         deleteTodo
