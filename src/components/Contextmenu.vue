@@ -20,7 +20,7 @@ document.addEventListener('click', (e)=>{
     }
 })
 document.oncontextmenu = (e) => {
-    e.preventDefault(); 
+    //e.preventDefault(); 
     let element = e.target as HTMLElement
     if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
         const menu = document.getElementById('contextmenu')

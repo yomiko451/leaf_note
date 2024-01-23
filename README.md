@@ -19,3 +19,7 @@ It is still under development, and many things need to be improved. I am not a p
 因为各种破事，自己这边时间比较有限，不过还是会尽力维护更新的啦！
 
 Because of various troubles, I have limited time here, but I will try my best to maintain and update it!
+
+本应用基于tauri框架开发，前端使用了vue3。
+默认封面图片来自P站，pid:114150535
+默认图标来自阿里巴巴矢量图标库，作者:斑头雁-一柒

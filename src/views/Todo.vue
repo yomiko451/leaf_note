@@ -8,7 +8,7 @@
         <ol class="groups">
             <li v-for="todoList, index in todoListArr" :key="todoList.id">
                 <div class="title"> 
-                    <input type="text" :value="todoList.title" v-show="renameWindow === index">  
+                    <input @keyup.enter="blur" type="text" :value="todoList.title" v-show="renameWindow === index">  
                     <p @click="rename(index, $event)">{{ todoList.title }}</p>
                     <p>{{ calculateCount(todoList.content) }}</p>
                     <div @click="deleteTodoList(index, todoList.title)">删除</div>
@@ -109,8 +109,13 @@ function rename(index: number, event: MouseEvent) {
             todoListArr.value[index].title = bro_element.value
             todoStore.saveTodoList(todoListArr.value[index])
             renameWindow.value=-1
-        })//TODO:事项重命名
+        })
     })
+}
+
+function blur(event: KeyboardEvent) {
+    const element = event.target as HTMLInputElement
+    element.blur()
 }
 
 function calculateCount(content: Array<Todo>) {
